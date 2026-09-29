@@ -24,27 +24,27 @@ class DatabaseSeeder extends Seeder
         $rolePusat = Role::firstOrCreate(['name' => 'admin_pusat']);
         $roleCabang = Role::firstOrCreate(['name' => 'admin_cabang']);
 
-        // 2. Cabangs
-        $cabangSolo = Cabang::create([
-            'kode' => 'CAB-SOLO',
-            'nama' => 'Cabang Solo',
+        // 2. Cabangs (Pusat, Gesi, Gemolong — sesuai AGENTS.md)
+        $cabangPusat = Cabang::create([
+            'kode' => 'CAB-PUSAT',
+            'nama' => 'Pusat',
             'alamat' => 'Jl. Slamet Riyadi No. 45, Solo',
             'no_hp' => '081234567890',
             'aktif' => true,
         ]);
 
-        $cabangSragen = Cabang::create([
-            'kode' => 'CAB-SRAGEN',
-            'nama' => 'Cabang Sragen',
-            'alamat' => 'Jl. Sukowati No. 12, Sragen',
+        $cabangGesi = Cabang::create([
+            'kode' => 'CAB-GESI',
+            'nama' => 'Gesi',
+            'alamat' => 'Jl. Raya Gesi No. 12, Sragen',
             'no_hp' => '081234567891',
             'aktif' => true,
         ]);
 
-        $cabangTanon = Cabang::create([
-            'kode' => 'CAB-TANON',
-            'nama' => 'Cabang Tanon',
-            'alamat' => 'Jl. Raya Tanon No. 8, Tanon',
+        $cabangGemolong = Cabang::create([
+            'kode' => 'CAB-GEMOLONG',
+            'nama' => 'Gemolong',
+            'alamat' => 'Jl. Raya Gemolong No. 8, Sragen',
             'no_hp' => '081234567892',
             'aktif' => true,
         ]);
@@ -57,41 +57,51 @@ class DatabaseSeeder extends Seeder
             'cabang_id' => null,
             'aktif' => true,
         ]);
+        $adminPusat->email_verified_at = now();
+        $adminPusat->save();
         $adminPusat->assignRole($rolePusat);
 
-        $adminSolo = User::create([
-            'name' => 'Admin Cabang Solo',
-            'email' => 'solo@nexa.com',
+        $adminGesi = User::create([
+            'name' => 'Admin Cabang Gesi',
+            'email' => 'gesi@nexa.com',
             'password' => Hash::make('password'),
-            'cabang_id' => $cabangSolo->id,
+            'cabang_id' => $cabangGesi->id,
             'aktif' => true,
         ]);
-        $adminSolo->assignRole($roleCabang);
+        $adminGesi->email_verified_at = now();
+        $adminGesi->save();
+        $adminGesi->assignRole($roleCabang);
 
-        $adminSragen = User::create([
-            'name' => 'Admin Cabang Sragen',
-            'email' => 'sragen@nexa.com',
+        $adminGemolong = User::create([
+            'name' => 'Admin Cabang Gemolong',
+            'email' => 'gemolong@nexa.com',
             'password' => Hash::make('password'),
-            'cabang_id' => $cabangSragen->id,
+            'cabang_id' => $cabangGemolong->id,
             'aktif' => true,
         ]);
-        $adminSragen->assignRole($roleCabang);
+        $adminGemolong->email_verified_at = now();
+        $adminGemolong->save();
+        $adminGemolong->assignRole($roleCabang);
 
         // 4. Karyawan (tiap jabatan: sales, supervisor, kolektor, surveyor, driver)
         $karyawans = [
-            // Cabang Solo
-            ['cabang_id' => $cabangSolo->id, 'kode' => 'KRY-SL-01', 'nama' => 'Andi Pratama', 'jabatan' => 'sales', 'no_hp' => '0811111111', 'area' => 'Area Solo Kota'],
-            ['cabang_id' => $cabangSolo->id, 'kode' => 'KRY-SL-02', 'nama' => 'Hendra Wijaya', 'jabatan' => 'supervisor', 'no_hp' => '0811111112', 'area' => 'Area Solo'],
-            ['cabang_id' => $cabangSolo->id, 'kode' => 'KRY-SL-03', 'nama' => 'Budi Santoso', 'jabatan' => 'kolektor', 'no_hp' => '0811111113', 'area' => 'Area Kartasura'],
-            ['cabang_id' => $cabangSolo->id, 'kode' => 'KRY-SL-04', 'nama' => 'Eko Prasetyo', 'jabatan' => 'surveyor', 'no_hp' => '0811111114', 'area' => 'Area Solo'],
-            ['cabang_id' => $cabangSolo->id, 'kode' => 'KRY-SL-05', 'nama' => 'Doni Saputra', 'jabatan' => 'driver', 'no_hp' => '0811111115', 'area' => 'Area Solo'],
+            ['cabang_id' => $cabangPusat->id, 'kode' => 'KRY-PS-01', 'nama' => 'Andi Pratama', 'jabatan' => 'sales', 'no_hp' => '0811111111', 'area' => 'Area Pusat'],
+            ['cabang_id' => $cabangPusat->id, 'kode' => 'KRY-PS-02', 'nama' => 'Hendra Wijaya', 'jabatan' => 'supervisor', 'no_hp' => '0811111112', 'area' => 'Area Pusat'],
+            ['cabang_id' => $cabangPusat->id, 'kode' => 'KRY-PS-03', 'nama' => 'Budi Santoso', 'jabatan' => 'kolektor', 'no_hp' => '0811111113', 'area' => 'Area Pusat'],
+            ['cabang_id' => $cabangPusat->id, 'kode' => 'KRY-PS-04', 'nama' => 'Eko Prasetyo', 'jabatan' => 'surveyor', 'no_hp' => '0811111114', 'area' => 'Area Pusat'],
+            ['cabang_id' => $cabangPusat->id, 'kode' => 'KRY-PS-05', 'nama' => 'Doni Saputra', 'jabatan' => 'driver', 'no_hp' => '0811111115', 'area' => 'Area Pusat'],
 
-            // Cabang Sragen (sesuai contoh dashboard di desain: Andi Area Sragen, Budi Area Tanon)
-            ['cabang_id' => $cabangSragen->id, 'kode' => 'KRY-SR-01', 'nama' => 'Andi', 'jabatan' => 'sales', 'no_hp' => '0812222221', 'area' => 'Area Sragen'],
-            ['cabang_id' => $cabangSragen->id, 'kode' => 'KRY-SR-02', 'nama' => 'Budi', 'jabatan' => 'kolektor', 'no_hp' => '0812222222', 'area' => 'Area Tanon'],
-            ['cabang_id' => $cabangSragen->id, 'kode' => 'KRY-SR-03', 'nama' => 'Cahyo Wibowo', 'jabatan' => 'surveyor', 'no_hp' => '0812222223', 'area' => 'Area Sragen'],
-            ['cabang_id' => $cabangSragen->id, 'kode' => 'KRY-SR-04', 'nama' => 'Dedi Setiawan', 'jabatan' => 'driver', 'no_hp' => '0812222224', 'area' => 'Area Sragen'],
-            ['cabang_id' => $cabangSragen->id, 'kode' => 'KRY-SR-05', 'nama' => 'Surya Dinata', 'jabatan' => 'supervisor', 'no_hp' => '0812222225', 'area' => 'Area Sragen'],
+            ['cabang_id' => $cabangGesi->id, 'kode' => 'KRY-GS-01', 'nama' => 'Andi', 'jabatan' => 'sales', 'no_hp' => '0812222221', 'area' => 'Area Gesi'],
+            ['cabang_id' => $cabangGesi->id, 'kode' => 'KRY-GS-02', 'nama' => 'Budi', 'jabatan' => 'kolektor', 'no_hp' => '0812222222', 'area' => 'Area Gesi'],
+            ['cabang_id' => $cabangGesi->id, 'kode' => 'KRY-GS-03', 'nama' => 'Cahyo Wibowo', 'jabatan' => 'surveyor', 'no_hp' => '0812222223', 'area' => 'Area Gesi'],
+            ['cabang_id' => $cabangGesi->id, 'kode' => 'KRY-GS-04', 'nama' => 'Dedi Setiawan', 'jabatan' => 'driver', 'no_hp' => '0812222224', 'area' => 'Area Gesi'],
+            ['cabang_id' => $cabangGesi->id, 'kode' => 'KRY-GS-05', 'nama' => 'Surya Dinata', 'jabatan' => 'supervisor', 'no_hp' => '0812222225', 'area' => 'Area Gesi'],
+
+            ['cabang_id' => $cabangGemolong->id, 'kode' => 'KRY-GM-01', 'nama' => 'Rudi Hartono', 'jabatan' => 'sales', 'no_hp' => '0813333331', 'area' => 'Area Gemolong'],
+            ['cabang_id' => $cabangGemolong->id, 'kode' => 'KRY-GM-02', 'nama' => 'Siti Lestari', 'jabatan' => 'kolektor', 'no_hp' => '0813333332', 'area' => 'Area Gemolong'],
+            ['cabang_id' => $cabangGemolong->id, 'kode' => 'KRY-GM-03', 'nama' => 'Agus Salim', 'jabatan' => 'surveyor', 'no_hp' => '0813333333', 'area' => 'Area Gemolong'],
+            ['cabang_id' => $cabangGemolong->id, 'kode' => 'KRY-GM-04', 'nama' => 'Wahyu Nugroho', 'jabatan' => 'driver', 'no_hp' => '0813333334', 'area' => 'Area Gemolong'],
+            ['cabang_id' => $cabangGemolong->id, 'kode' => 'KRY-GM-05', 'nama' => 'Bambang Suryo', 'jabatan' => 'supervisor', 'no_hp' => '0813333335', 'area' => 'Area Gemolong'],
         ];
 
         foreach ($karyawans as $k) {
@@ -100,7 +110,7 @@ class DatabaseSeeder extends Seeder
 
         // 5. Pelanggan Contoh (Ahmad Riyadi - Jl. Merdeka No 10)
         Pelanggan::create([
-            'cabang_id' => $cabangSolo->id,
+            'cabang_id' => $cabangPusat->id,
             'kode' => 'PLG-SL-001',
             'nama' => 'Ahmad Riyadi',
             'no_hp' => '081333444555',
@@ -112,8 +122,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Pelanggan::create([
-            'cabang_id' => $cabangSragen->id,
-            'kode' => 'PLG-SR-001',
+            'cabang_id' => $cabangGesi->id,
+            'kode' => 'PLG-GS-001',
             'nama' => 'Bpk. Sudirman',
             'no_hp' => '081333444556',
             'no_ktp' => '3314010101850002',
@@ -124,8 +134,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Pelanggan::create([
-            'cabang_id' => $cabangSragen->id,
-            'kode' => 'PLG-SR-002',
+            'cabang_id' => $cabangGemolong->id,
+            'kode' => 'PLG-GM-001',
             'nama' => 'Ibu Siti Aminah',
             'no_hp' => '081333444557',
             'no_ktp' => '3314020202920003',
@@ -167,7 +177,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // 7. Stok Barang per Cabang
-        $cabangs = [$cabangSolo, $cabangSragen, $cabangTanon];
+        $cabangs = [$cabangPusat, $cabangGesi, $cabangGemolong];
         $barangs = [$kulkas, $tv, $mesinCuci];
 
         foreach ($cabangs as $cabang) {

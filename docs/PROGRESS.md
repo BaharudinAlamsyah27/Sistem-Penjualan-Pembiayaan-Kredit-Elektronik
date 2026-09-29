@@ -10,7 +10,7 @@
 |------|-------|--------|----------------|
 | 0 | Persiapan | ✅ Selesai | 2026-09-29 |
 | 1 | Database, Seeder, Peran | ✅ Selesai | 2026-09-29 |
-| 2 | Layout & Dashboard | ⏳ Belum dimulai | — |
+| 2 | Layout & Dashboard | ✅ Selesai | 2026-09-29 |
 | 3 | Data Master | ⏳ Belum dimulai | — |
 | 4 | Sales Order & Survei | ⏳ Belum dimulai | — |
 | 5 | Faktur & Jadwal Angsuran | ⏳ Belum dimulai | — |
@@ -37,46 +37,61 @@
 - [x] docs/design/ folder tersedia
 - [x] Git diinisialisasi, commit pertama: fase-0: persiapan
 
-### Keputusan Fase 0
-- Laravel versi: 12.69.2 (bukan 11 seperti di GEMINI.md). Fungsionalitas identik.
-- Breeze stack: Blade, sesuai GEMINI.md.
-- Alpine.js: Ditambahkan via npm, di-import di app.js.
-
 ---
 
 ## Fase 1 — Database, Seeder, Peran
 
 ### Tugas
-- [x] 17 tabel database dimigrasi sesuai Bagian 6 GEMINI.md:
-  `cabangs`, `users`, `karyawans`, `pelanggans`, `barangs`, `stok_barangs`, `mutasi_stoks`, `pembelians`, `pembelian_details`, `returs`, `sales_orders`, `surveys`, `fakturs`, `angsurans`, `surat_jalans`, `nomor_dokumens`, `settings`.
+- [x] 17 tabel database dimigrasi sesuai Bagian 6 GEMINI.md.
 - [x] Model Eloquent lengkap beserta relasi, casts, dan soft deletes.
-- [x] Trait `BelongsToCabang` dipasang di semua model bertabel `cabang_id` (kecuali master global `barangs` dan `cabangs`).
+- [x] Trait `BelongsToCabang` dipasang di semua model bertabel `cabang_id`.
 - [x] Cast `encrypted` pada `pelanggans.no_ktp`.
-- [x] Helper global `setting($key, $default = null)` dan model `Setting` dengan method `get` & `set`.
+- [x] Helper global `setting($key, $default = null)` dan model `Setting`.
 - [x] Peran Spatie: `admin_pusat` dan `admin_cabang`.
-- [x] Seeder lengkap (`DatabaseSeeder`):
-  - User: Super Admin (`admin@nexa.com`, `admin_pusat`, cabang_id = null)
-  - Cabang: Solo, Sragen, Tanon
-  - User: Admin Solo (`solo@nexa.com`, `admin_cabang`), Admin Sragen (`sragen@nexa.com`, `admin_cabang`)
-  - Karyawan tiap jabatan (sales, supervisor, kolektor, surveyor, driver)
-  - Pelanggan contoh: Ahmad Riyadi (Solo), Bpk. Sudirman (Sragen), Ibu Siti Aminah (Sragen)
-  - Barang contoh: Kulkas 2 Pintu Merk XYZ (Rp 4.000.000), TV LED, Mesin Cuci
-  - Stok awal di setiap cabang
-  - Setting default: `dp_hitung_angsuran_pertama` = `0`
-- [x] Feature Test `Fase1Test`: 7 skenario pengujian isolasi cabang, login kedua peran, enkripsi KTP, setting helper, dan auto-assign cabang_id.
+- [x] Seeder lengkap (`DatabaseSeeder`).
+- [x] Feature Test `Fase1Test`: 7 skenario pengujian.
 
-### Keputusan Fase 1
-- `pelanggans.no_ktp` menggunakan tipe kolom `text` di migration agar kompatibel dengan panjang string terenkripsi Laravel `encrypted` cast.
-- Helper global didaftarkan pada key `"files"` di `composer.json` (`app/Helpers/helpers.php`).
-- Global scope `BelongsToCabang` mengecek role `admin_pusat`; selain role tersebut, query otomatis difilter hanya untuk `cabang_id` milik user yang sedang login.
+---
 
-### Cara Uji Fase 1
-1. Jalankan `php artisan test --filter=Fase1Test` -> 7 passed (33 assertions).
-2. Jalankan `php artisan test` -> 32 passed (94 assertions).
-3. Jalankan `php artisan migrate:fresh --seed` -> database terisi data seeder.
-4. Buka `http://nexaerp.test/login`:
-   - Login `admin@nexa.com` / `password` (Super Admin - admin_pusat)
-   - Login `solo@nexa.com` / `password` (Admin Cabang Solo - admin_cabang)
+## Fase 2 — Layout & Dashboard Analytics
+
+### Tugas
+- [x] Layout Blade sesuai Bagian 4 GEMINI.md:
+  - Sidebar kiri (lebar 240px, putih, border tipis, logo `NexaERP.` biru, label grup huruf kapital kecil abu-abu).
+  - Item aktif: teks biru tebal (`#2557a7`) + border biru vertikal di sisi kiri (`border-l-4`).
+  - Responsif: Sidebar otomatis menjadi off-canvas drawer dengan Alpine.js pada layar mobile.
+- [x] Urutan menu sidebar persis Bagian 4.2:
+  - Menu Utama: *Dashboard Analytics*
+  - Sales & Kredit: *Data Pelanggan*, *Sales Order (SO)*, *Survey Kelayakan*, *Penerimaan Angsuran*
+  - Inventori & Logistik: *Data Barang*, *Pembelian & Retur*, *Surat Jalan (TTB)*
+  - Keuangan (Laporan): *Laba / Rugi*, *Laporan Tagihan*
+  - Master & Setup: *Karyawan & Akses*, *Data Cabang* (hanya tampil untuk `admin_pusat`).
+- [x] Header atas:
+  - Judul halaman ("Dashboard Analytics") di kiri.
+  - Badge peran di kanan: "Super Admin" dengan ikon user untuk `admin_pusat`, nama cabang untuk `admin_cabang`.
+  - Dropdown user profil & tombol Logout.
+- [x] Dashboard Analytics mirip persis `docs/design/dashboard.png`:
+  - 4 Kartu Metrik: Laba Bersih (+12% dari bulan lalu), Total Piutang Berjalan (peringatan pelanggan jatuh tempo), Angsuran Masuk Hari Ini (target harian), Sales Order Menunggu Survey (keterangan surveyor).
+  - Tabel "Tagihan Angsuran Jatuh Tempo Hari Ini": No. Faktur, Nama Pelanggan (Angsuran ke X dari Y), Nominal Tagihan, Kolektor (Sales) + Area, Status badge ("Menunggu Pembayaran" oranye, "Lunas Hari Ini" hijau).
+- [x] Controller `DashboardController` dan rute modul navigasi agar tidak ada link yang 404.
+- [x] Halaman landing `welcome.blade.php` bertema NexaERP.
+- [x] Feature test `DashboardTest`: 4 skenario otorisasi, badge peran, akses menu cabang, dan modul navigasi.
+
+### Keputusan Fase 2
+- Layout menggunakan Google Font *Inter* dan background `#f4f6fa` untuk kenyamanan visual sesuai standar Bagian 4.1.
+- Warna brand utama: `#2557a7` (biru panel NexaERP).
+- Modul navigasi dihubungkan ke view placeholder yang rapi sehingga saat menu diklik tidak menghasilkan error 404 sebelum Fase 3-7 dimulai.
+
+### Cara Uji Fase 2
+1. Jalankan `php artisan test` -> 36 passed (123 assertions).
+2. Login sebagai `admin@nexa.com` (Super Admin):
+   - Periksa header kanan atas: tampil badge biru `Super Admin`.
+   - Periksa sidebar: menu `Data Cabang` tampil.
+   - Periksa 4 kartu metrik dan tabel tagihan jatuh tempo.
+3. Login sebagai `solo@nexa.com` (Admin Cabang Solo):
+   - Periksa header kanan atas: tampil badge hijau `Cabang Solo`.
+   - Periksa sidebar: menu `Data Cabang` tidak tampil (tersembunyi).
+   - Coba buka `/cabang` -> muncul 403 Forbidden.
 
 ---
 
@@ -95,5 +110,4 @@
 
 ## Catatan / Masalah
 
-- 2026-09-29 (Fase 1): Migrasi kolom `cabang_id` dan `aktif` ke tabel `users` dibuat terpisah dan dijalankan setelah tabel `cabangs` terbuat untuk integritas foreign key.
-- 2026-09-29 (Fase 1): Seluruh 32 test lulus.
+- 2026-09-29 (Fase 2): Seluruh 36 test fitur lulus tanpa error. Desain visual dashboard dan sidebar telah disesuaikan dengan foto acuan `dashboard.png`.
