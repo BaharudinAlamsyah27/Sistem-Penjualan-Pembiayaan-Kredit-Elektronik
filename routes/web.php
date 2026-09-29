@@ -52,6 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/angsuran/{angsuran}', [PenerimaanAngsuranController::class, 'store'])->name('angsuran.store');
     Route::put('/angsuran/{angsuran}', [PenerimaanAngsuranController::class, 'update'])->name('angsuran.update');
     Route::get('/surat-jalan', [SuratJalanController::class, 'index'])->name('surat-jalan.index');
+    Route::post('/surat-jalan/{suratJalan}/verifikasi', [SuratJalanController::class, 'verify'])->name('surat-jalan.verify');
     Route::get('/laporan/penjualan', [LaporanController::class, 'penjualan'])->name('laporan.penjualan');
     Route::get('/laporan/kolektor', [LaporanController::class, 'kolektor'])->name('laporan.kolektor');
     Route::get('/laporan/laba-rugi', [LaporanController::class, 'labaRugi'])->name('laporan.laba-rugi');

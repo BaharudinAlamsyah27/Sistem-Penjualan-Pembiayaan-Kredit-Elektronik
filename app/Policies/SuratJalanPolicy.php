@@ -16,4 +16,9 @@ class SuratJalanPolicy
     {
         return $user->hasRole('admin_pusat') || ($user->hasRole('admin_cabang') && $user->cabang_id === $suratJalan->cabang_id);
     }
+
+    public function verify(User $user, SuratJalan $suratJalan): bool
+    {
+        return $this->view($user, $suratJalan);
+    }
 }

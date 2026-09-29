@@ -197,7 +197,7 @@
 - [x] Pengujian inti memastikan admin cabang ditolak dan alur file privat berhasil (12 assertions).
 
 ### Belum selesai
-- Kalibrasi koordinat mm, layout cetak Nota DP/Faktur/Kwitansi/Surat Jalan, dan uji pratinjau grid menunggu template klien. Pengguna belum memiliki scan saat ini; template dapat disediakan lewat menu **Template Kwitansi** atau `docs/design/kwitansi.jpg`.
+- Kalibrasi koordinat mm, layout cetak Nota DP/Faktur/Kwitansi/Surat Jalan, dan uji pratinjau grid menunggu template kwitansi asli. Gambar contoh sudah diunggah dan terlihat melalui menu **Template Kwitansi**, tetapi belum dipakai untuk kalibrasi final.
 
 ## Pertanyaan Terbuka (dari GEMINI.md bagian 14)
 
@@ -208,10 +208,13 @@
 | 3 | Apakah pembayaran parsial diizinkan? | Belum dijawab |
 | 4 | Arti pasti BPV dan Nota pada surat jalan | Belum dijawab |
 | 5 | Kapan stok berkurang: saat faktur terbit atau saat terkirim? | Belum dijawab |
-| 6 | Template kwitansi/nota klien (menunggu foto/scan) | Menunggu file |
+| 6 | Template kwitansi/nota klien | Gambar contoh diterima; template asli masih ditunggu |
 
 ---
 
 ## Catatan / Masalah
 
 - 2026-09-29 (Fase 2): Seluruh 36 test fitur lulus tanpa error. Desain visual dashboard dan sidebar telah disesuaikan dengan foto acuan `dashboard.png`.
+- 2026-09-29: Form pembelian dan karyawan menghasilkan PHP Blade yang tidak valid karena `@enderror@endif` berdekatan; form pelanggan juga memiliki pola sama. View ditulis ulang dan file hasil kompilasi terkait lolos `php -l`.
+- 2026-09-29: Daftar barang menampilkan saldo stok per cabang dan form edit menampilkan ringkasan stok. Perubahan jumlah tetap harus dicatat lewat pembelian/`StokService` agar mutasi stok tidak terlewati.
+- 2026-09-29: TTB kini memiliki aksi admin untuk mengubah status menunggu menjadi terverifikasi; perubahan dicatat oleh activity log.
