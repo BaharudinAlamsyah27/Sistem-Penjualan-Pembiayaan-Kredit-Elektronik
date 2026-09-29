@@ -12,7 +12,7 @@
 | 1 | Database, Seeder, Peran | ✅ Selesai | 2026-09-29 |
 | 2 | Layout & Dashboard | ✅ Selesai | 2026-09-29 |
 | 3 | Data Master | ✅ Selesai | 2026-09-29 |
-| 4 | Sales Order & Survei | ⏳ Belum dimulai | — |
+| 4 | Sales Order & Survei | ✅ Selesai | 2026-09-29 |
 | 5 | Faktur & Jadwal Angsuran | ⏳ Belum dimulai | — |
 | 6 | Penerimaan Angsuran & Tagihan | ⏳ Belum dimulai | — |
 | 7 | Laporan Dasar | ⏳ Belum dimulai | — |
@@ -118,6 +118,24 @@
 ### Catatan Pengujian
 - Seluruh suite `php artisan test --compact` masih memiliki 6 kegagalan dari test Fase 1/2 yang mencari akun/cabang `solo`/`CAB-SOLO` dan isi dashboard lama; seeder saat ini memakai Gesi dan Gemolong. Test Fase 3 lulus. Perbaikan seeder/test Fase 1/2 dicatat untuk fase terkait dan tidak diubah di sini.
 - Checkout tidak memiliki `.env` atau dependensi npm. Kunci aplikasi sementara diberikan hanya melalui environment proses saat test; tidak disimpan ke file.
+
+## Fase 4 — Sales Order & Survei
+
+### Tugas
+- [x] Halaman daftar, form wizard SO, dan detail SO; input pelanggan, barang, jumlah, sales, DP, tenor, dan bunga.
+- [x] Ringkasan kredit Alpine.js di browser dan hitung ulang di server memakai harga master barang.
+- [x] Nomor SO berurutan per cabang/bulan melalui `NomorDokumenService`.
+- [x] Pembuatan survei berstatus menunggu, penugasan surveyor, dan pencatatan hasil layak/tidak layak.
+- [x] Hasil tidak layak mengubah SO menjadi `ditolak`; SO layak tetap di tahap survey untuk dilanjutkan ke Fase 5.
+- [x] Policy dan validasi cabang untuk SO dan survei.
+
+### Keputusan Fase 4
+- Harga pada SO disimpan sebagai harga satuan snapshot; kalkulasi DP/kredit menggunakan harga satuan × jumlah barang.
+- Survei berstatus `layak` belum mengubah SO menjadi `disetujui`; persetujuan faktur berada di Fase 5.
+
+### Cara Uji Fase 4
+- `php artisan test --compact tests/Feature/Fase4Test.php` -> 1 alur inti lulus (17 assertions), mencakup render form, hitung kredit contoh, penomoran SO, dan penolakan ketika hasil survei tidak layak.
+- Atas arahan pengguna, test dibatasi ke alur inti fase aktif; suite lama Fase 1/2 tidak dijalankan ulang.
 
 ## Pertanyaan Terbuka (dari GEMINI.md bagian 14)
 

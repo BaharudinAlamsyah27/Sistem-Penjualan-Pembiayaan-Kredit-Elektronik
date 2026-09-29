@@ -7,6 +7,8 @@ use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SalesOrderController;
+use App\Http\Controllers\SurveyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,8 +32,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('cabang', CabangController::class)->except('show');
     });
 
-    Route::get('/sales-order', fn () => view('placeholder', ['title' => 'Sales Order (SO)']))->name('sales-order.index');
-    Route::get('/survey', fn () => view('placeholder', ['title' => 'Survey Kelayakan']))->name('survey.index');
+    Route::get('/sales-order', [SalesOrderController::class, 'index'])->name('sales-order.index');
+    Route::get('/sales-order/create', [SalesOrderController::class, 'create'])->name('sales-order.create');
+    Route::post('/sales-order', [SalesOrderController::class, 'store'])->name('sales-order.store');
+    Route::get('/sales-order/{sales_order}', [SalesOrderController::class, 'show'])->name('sales-order.show');
+    Route::get('/survey', [SurveyController::class, 'index'])->name('survey.index');
+    Route::get('/survey/{survey}/edit', [SurveyController::class, 'edit'])->name('survey.edit');
+    Route::put('/survey/{survey}', [SurveyController::class, 'update'])->name('survey.update');
     Route::get('/angsuran', fn () => view('placeholder', ['title' => 'Penerimaan Angsuran']))->name('angsuran.index');
     Route::get('/surat-jalan', fn () => view('placeholder', ['title' => 'Surat Jalan (TTB)']))->name('surat-jalan.index');
     Route::get('/laporan/laba-rugi', fn () => view('placeholder', ['title' => 'Laporan Laba / Rugi']))->name('laporan.laba-rugi');

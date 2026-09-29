@@ -21,6 +21,7 @@ return [
     ],
     'numeric' => ':attribute harus berupa angka.',
     'required' => ':attribute wajib diisi.',
+    'regex' => 'Format :attribute tidak valid.',
     'string' => ':attribute harus berupa teks.',
     'unique' => ':attribute sudah digunakan.',
     'attributes' => [
@@ -29,5 +30,8 @@ return [
         'tanggal' => 'tanggal', 'supplier' => 'pemasok', 'metode' => 'metode pembayaran',
         'items' => 'daftar barang', 'items.*.barang_id' => 'barang', 'items.*.qty' => 'jumlah', 'items.*.harga' => 'harga',
         'harga_beli' => 'harga beli', 'harga_jual' => 'harga jual', 'no_ktp' => 'nomor KTP',
+        'dp' => 'uang muka', 'tenor' => 'tenor', 'bunga_persen' => 'bunga margin', 'qty' => 'jumlah barang',
+        'pelanggan_id' => 'pelanggan', 'barang_id' => 'barang', 'sales_id' => 'sales', 'surveyor_id' => 'surveyor',
+        'hasil' => 'hasil survei',
     ],
 ];
