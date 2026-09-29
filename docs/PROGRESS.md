@@ -155,6 +155,23 @@
 - Suite penuh dan formatter tidak dijalankan: sesuai arahan hemat token; perintah `php artisan pint --dirty` tidak tersedia karena Pint belum terpasang.
 - `.env` tidak tersedia di checkout; test memakai `APP_KEY` sementara hanya untuk proses test.
 
+## Fase 6 — Penerimaan Angsuran & Tagihan
+
+### Tugas
+- [x] Cari dan catat pembayaran penuh berdasarkan faktur/pelanggan; nominal dibayar ditetapkan server sesuai nominal angsuran.
+- [x] Pilih kolektor aktif satu cabang, simpan tanggal/metode/catatan, dan larang pembayaran ulang.
+- [x] Faktur otomatis berstatus lunas setelah semua angsuran lunas; koreksi pembayaran lunas hanya admin pusat dan tercatat di activity log.
+- [x] Laporan tagihan dengan filter bulan, kolektor, kabupaten, kecamatan, status, dan cabang untuk admin pusat.
+- [x] Dashboard tetap menggunakan agregasi data angsuran/faktur aktual, bukan angka tetap.
+
+### Keputusan Fase 6
+- Pembayaran parsial tetap tidak didukung sesuai batas MVP. Form hanya menerima pelunasan penuh; nilai pembayaran tidak berasal dari input browser.
+- Metode awal di form penerimaan adalah tunai atau transfer; kolom database tetap menerima label metode lain untuk kebutuhan berikutnya.
+
+### Cara Uji Fase 6
+- `php artisan test --compact tests/Feature/Fase6Test.php` -> alur pembayaran, status faktur, larangan koreksi oleh admin cabang, koreksi oleh admin pusat + activity log, dan laporan lulus (9 assertions).
+- Tidak menjalankan suite penuh atas arahan penghematan token.
+
 ## Pertanyaan Terbuka (dari GEMINI.md bagian 14)
 
 | # | Pertanyaan | Status |
