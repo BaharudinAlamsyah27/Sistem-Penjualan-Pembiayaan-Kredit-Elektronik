@@ -17,7 +17,7 @@
 | 6 | Penerimaan Angsuran & Tagihan | ✅ Selesai | 2026-09-29 |
 | 7 | Laporan Dasar | ✅ Selesai | 2026-09-29 |
 | 8 | Cetak | ✅ Selesai* | 2026-09-29 |
-| 9 | Pengerasan & Deploy | ⏳ Belum dimulai | — |
+| 9 | Pengerasan & Deploy | 🟡 Siap deploy | 2026-09-29 |
 
 ---
 
@@ -228,6 +228,8 @@
 - [x] Audit akses: pendaftaran publik dinonaktifkan; endpoint cetak mengikuti policy cabang; file template tetap privat dan pratinjau hanya untuk admin pusat.
 - [x] Pertahankan validasi Form Request serta pencatatan perubahan stok melalui `StokService`.
 - [x] Test fokus perubahan aktif lulus; suite penuh tidak diulang sesuai arahan penghematan token.
+- [ ] Deploy nyata ke cPanel dan smoke test produksi menunggu domain/hosting serta kredensial dari pemilik.
+- [ ] Cetak fisik kwitansi satu kali untuk mengunci posisi akhir; ukuran awal sudah diatur dan dapat disetel di konfigurasi.
 
 ---
 
