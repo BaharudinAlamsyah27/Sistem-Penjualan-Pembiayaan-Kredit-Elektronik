@@ -101,6 +101,10 @@
                    class="flex items-center px-6 py-2.5 transition-colors {{ request()->routeIs('cabang.*') ? 'border-l-4 border-[#2557a7] bg-blue-50/50 text-[#2557a7] font-semibold' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}">
                     <span>Data Cabang</span>
                 </a>
+                <a href="{{ route('pengaturan.template-kwitansi.index') }}"
+                   class="flex items-center px-6 py-2.5 transition-colors {{ request()->routeIs('pengaturan.template-kwitansi.*') ? 'border-l-4 border-[#2557a7] bg-blue-50/50 text-[#2557a7] font-semibold' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}">
+                    <span>Template Kwitansi</span>
+                </a>
                 @endif
             </div>
         </div>

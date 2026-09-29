@@ -274,7 +274,7 @@ Semua perubahan stok **wajib** lewat `StokService` (mencatat `mutasi_stoks`). Di
 
 ## 10. Cetak Nota / Kwitansi
 
-- Klien memiliki **template kwitansi fisik** yang posisinya harus pas. Minta pengguna mengunggah foto/scan ke `docs/design/kwitansi.jpg` sebelum Fase 8.
+- Klien memiliki **template kwitansi fisik** yang posisinya harus pas. Sebelum kalibrasi akhir Fase 8, minta pengguna menyediakan foto/scan. Template dapat diunggah melalui menu **Template Kwitansi** (khusus `admin_pusat`, tersimpan privat di storage aplikasi) atau diletakkan lokal di `docs/design/kwitansi.jpg`.
 - Buat halaman cetak khusus (`resources/views/cetak/*.blade.php`) dengan CSS `@page` dan posisi elemen memakai satuan **mm** (`position: absolute`), tanpa sidebar/header.
 - Semua koordinat elemen dikumpulkan di satu file konfigurasi (`config/cetak.php`) agar mudah disetel berulang kali tanpa membongkar view.
 - Jenis cetak: Nota DP, Faktur/Invoice, Kwitansi Angsuran, Surat Jalan.

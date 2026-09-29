@@ -189,6 +189,16 @@
 - `php artisan route:list --path=laporan --except-vendor` memastikan kelima rute laporan terdaftar; sintaks PHP dan `git diff --check` bersih.
 - Suite penuh tidak dijalankan atas arahan penghematan token.
 
+## Fase 8 — Cetak (prasyarat template sedang disiapkan)
+
+### Selesai sebagai prasyarat non-template
+- [x] Halaman admin pusat untuk mengunggah, melihat pratinjau, mengganti, dan menghapus foto/scan kwitansi.
+- [x] Validasi hanya menerima gambar JPG/JPEG/PNG hingga 10 MB; file disimpan privat, bukan di folder publik.
+- [x] Pengujian inti memastikan admin cabang ditolak dan alur file privat berhasil (12 assertions).
+
+### Belum selesai
+- Kalibrasi koordinat mm, layout cetak Nota DP/Faktur/Kwitansi/Surat Jalan, dan uji pratinjau grid menunggu template klien. Pengguna belum memiliki scan saat ini; template dapat disediakan lewat menu **Template Kwitansi** atau `docs/design/kwitansi.jpg`.
+
 ## Pertanyaan Terbuka (dari GEMINI.md bagian 14)
 
 | # | Pertanyaan | Status |

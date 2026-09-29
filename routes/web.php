@@ -14,6 +14,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\SuratJalanController;
+use App\Http\Controllers\TemplateKwitansiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -56,6 +57,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/laporan/laba-rugi', [LaporanController::class, 'labaRugi'])->name('laporan.laba-rugi');
     Route::get('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
     Route::get('/laporan/tagihan', [LaporanTagihanController::class, 'index'])->name('laporan.tagihan');
+    Route::get('/pengaturan/template-kwitansi', [TemplateKwitansiController::class, 'index'])->name('pengaturan.template-kwitansi.index');
+    Route::post('/pengaturan/template-kwitansi', [TemplateKwitansiController::class, 'upload'])->name('pengaturan.template-kwitansi.upload');
+    Route::get('/pengaturan/template-kwitansi/pratinjau', [TemplateKwitansiController::class, 'preview'])->name('pengaturan.template-kwitansi.preview');
+    Route::delete('/pengaturan/template-kwitansi', [TemplateKwitansiController::class, 'destroy'])->name('pengaturan.template-kwitansi.destroy');
 });
 
 require __DIR__.'/auth.php';
