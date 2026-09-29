@@ -49,17 +49,17 @@ class SalesOrder extends Model
 
     public function pelanggan(): BelongsTo
     {
-        return $this->belongsTo(Pelanggan::class);
+        return $this->belongsTo(Pelanggan::class)->withTrashed();
     }
 
     public function barang(): BelongsTo
     {
-        return $this->belongsTo(Barang::class);
+        return $this->belongsTo(Barang::class)->withTrashed();
     }
 
     public function sales(): BelongsTo
     {
-        return $this->belongsTo(Karyawan::class, 'sales_id');
+        return $this->belongsTo(Karyawan::class, 'sales_id')->withTrashed();
     }
 
     public function creator(): BelongsTo

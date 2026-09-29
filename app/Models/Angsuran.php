@@ -47,12 +47,12 @@ class Angsuran extends Model
 
     public function faktur(): BelongsTo
     {
-        return $this->belongsTo(Faktur::class);
+        return $this->belongsTo(Faktur::class)->withTrashed();
     }
 
     public function kolektor(): BelongsTo
     {
-        return $this->belongsTo(Karyawan::class, 'kolektor_id');
+        return $this->belongsTo(Karyawan::class, 'kolektor_id')->withTrashed();
     }
 
     public function dicatatOleh(): BelongsTo

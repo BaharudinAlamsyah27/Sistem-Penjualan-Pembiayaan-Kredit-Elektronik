@@ -64,7 +64,7 @@ NexaERP adalah aplikasi web Laravel untuk penjualan elektronik secara kredit pad
 
 ### 2.1 Masuk dan memahami hak akses
 
-1. Buka alamat aplikasi yang diberikan administrator, lalu masuk dengan email dan kata sandi akun Anda.
+1. Buka alamat aplikasi yang diberikan administrator, lalu masuk dengan email dan kata sandi akun aktif Anda.
 2. Admin pusat dapat memilih/meninjau lintas cabang dan mengelola cabang serta template kwitansi.
 3. Admin cabang bekerja dalam batas cabangnya. Data cabang lain seharusnya tidak terlihat atau dapat dibuka melalui tautan langsung.
 4. Akun publik baru tidak dapat didaftarkan dari halaman web. Pembuatan akun admin perlu dilakukan oleh pengelola teknis dengan otorisasi pemilik.
@@ -240,7 +240,6 @@ Master pelanggan/barang/karyawan
 | `Auth/NewPasswordController.php` | Form dan penyimpanan reset password. |
 | `Auth/PasswordController.php` | Perubahan password setelah login. |
 | `Auth/PasswordResetLinkController.php` | Meminta tautan reset password. |
-| `Auth/RegisteredUserController.php` | Scaffold Breeze tersisa; endpoint pendaftaran publik sudah dilepas dari route. Jangan mengaktifkan kembali tanpa desain provisioning/role yang aman. |
 | `Auth/VerifyEmailController.php` | Validasi tautan verifikasi. |
 
 ### 4.3 `app/Http/Requests/` — input tervalidasi
@@ -303,8 +302,8 @@ Master pelanggan/barang/karyawan
 - `resources/views/layouts/app.blade.php`, `sidebar.blade.php`, `navigation.blade.php`: kerangka halaman, menu desktop/mobile.
 - `resources/views/dashboard.blade.php`: dashboard; `master/{barang,cabang,karyawan,pelanggan,pembelian}/`: halaman daftar/form master.
 - `resources/views/sales-order/`: daftar, input, detail, dan form penerbitan faktur; `survey/`, `angsuran/`, `surat-jalan/`, `laporan/`: modul terkait nama folder.
-- `resources/views/cetak/`: view mandiri nota DP, faktur, kwitansi, surat jalan, kalibrasi. `components/cetak-layout.blade.php` adalah pembungkus cetak. `cetak/layout.blade.php` adalah partial CSS lama; perubahan layout aktif dilakukan pada component.
-- `resources/views/auth/` dan `profile/`: halaman login/reset/verifikasi serta profil. `auth/register.blade.php` adalah sisa scaffold dan tidak memiliki route publik.
+- `resources/views/cetak/`: view mandiri nota DP, faktur, kwitansi, surat jalan, kalibrasi. `components/cetak-layout.blade.php` adalah pembungkus cetak aktif.
+- `resources/views/auth/` dan `profile/`: halaman login/reset/verifikasi serta profil. Pendaftaran publik tidak diaktifkan dan scaffold register-nya sudah dibersihkan.
 - `resources/views/components/`: potongan UI Blade bersama seperti tombol, input, dropdown, logo, layout cetak.
 - `resources/css/app.css`, `resources/js/app.js`, `resources/js/bootstrap.js`: sumber CSS/JS; Tailwind/Alpine masuk lewat Vite.
 - `config/cetak.php`: ukuran kertas/koordinat elemen. `config/app.php`, `auth.php`, `database.php`, `filesystems.php`, `cache.php`, `session.php`, `queue.php`, `mail.php`, `logging.php`, `permission.php`, `services.php`: konfigurasi framework/paket; secret berasal `.env`.
@@ -317,9 +316,9 @@ Master pelanggan/barang/karyawan
 
 **Tampilan layout dan bersama:** `layouts/app.blade.php` (kerangka login), `layouts/guest.blade.php` (kerangka guest), `layouts/navigation.blade.php` (navigasi Breeze), `layouts/sidebar.blade.php` (menu kiri), `components/application-logo.blade.php` (logo), `components/auth-session-status.blade.php` (pesan auth), `components/cetak-layout.blade.php` (kertas cetak), `components/danger-button.blade.php` (aksi berbahaya), `components/dropdown-link.blade.php` (tautan menu), `components/dropdown.blade.php` (wadah menu), `components/input-error.blade.php` (error form), `components/input-label.blade.php` (label), `components/modal.blade.php` (modal), `components/nav-link.blade.php` (tautan nav), `components/primary-button.blade.php` (tombol utama), `components/responsive-nav-link.blade.php` (nav mobile), `components/secondary-button.blade.php` (tombol sekunder), `components/text-input.blade.php` (input teks).
 
-**Tampilan per modul:** `dashboard.blade.php` ringkasan; `master/barang/index.blade.php` daftar barang/stok dan `master/barang/form.blade.php` form barang; pasangan `index/form` pada `master/cabang/`, `master/karyawan/`, `master/pelanggan/`, dan `master/pembelian/` masing-masing untuk daftar dan input modulnya; `sales-order/index.blade.php` daftar SO, `create.blade.php` wizard input, `show.blade.php` detail/alur, `faktur.blade.php` form penerbitan; `survey/index.blade.php` antrean, `survey/edit.blade.php` penugasan/hasil; `angsuran/index.blade.php` penerimaan; `surat-jalan/index.blade.php` pengiriman dan verifikasi; `laporan/kolektor.blade.php`, `laba-rugi.blade.php`, `penjualan.blade.php`, `tagihan.blade.php` masing-masing laporan terkait; `pengaturan/template-kwitansi.blade.php` upload/pratinjau admin; `placeholder.blade.php` modul navigasi yang belum punya workflow.
+**Tampilan per modul:** `dashboard.blade.php` ringkasan; `master/barang/index.blade.php` daftar barang/stok dan `master/barang/form.blade.php` form barang; pasangan `index/form` pada `master/cabang/`, `master/karyawan/`, `master/pelanggan/`, dan `master/pembelian/` masing-masing untuk daftar dan input modulnya; `sales-order/index.blade.php` daftar SO, `create.blade.php` wizard input, `show.blade.php` detail/alur, `faktur.blade.php` form penerbitan; `survey/index.blade.php` antrean, `survey/edit.blade.php` penugasan/hasil; `angsuran/index.blade.php` penerimaan; `surat-jalan/index.blade.php` pengiriman dan verifikasi; `laporan/kolektor.blade.php`, `laba-rugi.blade.php`, `penjualan.blade.php`, `tagihan.blade.php` masing-masing laporan terkait; `pengaturan/template-kwitansi.blade.php` upload/pratinjau admin.
 
-**Cetak/auth/profil:** `cetak/faktur.blade.php`, `kalibrasi.blade.php`, `kwitansi.blade.php`, `layout.blade.php` (partial styling legacy), `nota-dp.blade.php`, `surat-jalan.blade.php`; `welcome.blade.php` landing; `auth/login.blade.php`, `confirm-password.blade.php`, `forgot-password.blade.php`, `register.blade.php` (sisa tampilan scaffold tanpa route register), `reset-password.blade.php`, `verify-email.blade.php`; `profile/edit.blade.php` halaman profil serta `profile/partials/delete-user-form.blade.php`, `update-password-form.blade.php`, `update-profile-information-form.blade.php` bagian form profil.
+**Cetak/auth/profil:** `cetak/faktur.blade.php`, `kalibrasi.blade.php`, `kwitansi.blade.php`, `nota-dp.blade.php`, `surat-jalan.blade.php`; `welcome.blade.php` landing; `auth/login.blade.php`, `confirm-password.blade.php`, `forgot-password.blade.php`, `reset-password.blade.php`, `verify-email.blade.php`; `profile/edit.blade.php` halaman profil serta `profile/partials/delete-user-form.blade.php`, `update-password-form.blade.php`, `update-profile-information-form.blade.php` bagian form profil.
 
 **Migration bernama (timestamp menjelaskan urutan):** `0001_01_01_000000_create_users_table.php` akun; `0001_01_01_000001_create_cache_table.php` cache; `0001_01_01_000002_create_jobs_table.php` antrean; `2026_09_29_022040_create_cabangs_table.php`; `2026_09_29_022041_add_cabang_id_and_aktif_to_users_table.php`; `2026_09_29_022042_create_barangs_and_stoks_table.php`; `2026_09_29_022042_create_karyawans_table.php`; `2026_09_29_022042_create_pelanggans_table.php`; `2026_09_29_022042_create_pembelians_and_returs_table.php`; `2026_09_29_022042_create_settings_table.php`; `2026_09_29_022043_create_sales_orders_table.php`; `2026_09_29_022043_create_surveys_table.php`; `2026_09_29_022044_create_fakturs_and_angsurans_table.php`; `2026_09_29_025955_create_permission_tables.php`; `2026_09_29_025957_create_activity_log_table.php`; `2026_09_29_025958_add_event_column_to_activity_log_table.php`; `2026_09_29_025959_add_batch_uuid_column_to_activity_log_table.php`.
 

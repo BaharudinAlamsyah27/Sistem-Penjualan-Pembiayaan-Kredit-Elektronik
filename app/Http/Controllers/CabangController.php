@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CabangRequest;
 use App\Models\Cabang;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class CabangController extends Controller
@@ -49,9 +50,18 @@ class CabangController extends Controller
 
     public function destroy(Cabang $cabang): RedirectResponse
     {
-        if ($cabang->users()->exists() || $cabang->karyawans()->exists() || $cabang->pelanggans()->exists() || $cabang->stokBarangs()->exists() || $cabang->salesOrders()->exists() || $cabang->fakturs()->exists()) {
-            return back()->with('error', 'Cabang yang masih memiliki data operasional tidak dapat dihapus.');
+        $tabelDenganCabang = [
+            'users', 'karyawans', 'pelanggans', 'stok_barangs', 'mutasi_stoks', 'pembelians',
+            'returs', 'sales_orders', 'surveys', 'fakturs', 'angsurans', 'surat_jalans', 'nomor_dokumens',
+        ];
+        $masihDipakai = collect($tabelDenganCabang)->contains(
+            fn (string $tabel) => DB::table($tabel)->where('cabang_id', $cabang->id)->exists()
+        );
+
+        if ($masihDipakai) {
+            return back()->with('error', 'Cabang yang memiliki riwayat atau data operasional tidak dapat dihapus. Nonaktifkan cabang agar riwayat tetap aman.');
         }
+
         $cabang->delete();
 
         return redirect()->route('cabang.index')->with('success', 'Data cabang berhasil dihapus.');

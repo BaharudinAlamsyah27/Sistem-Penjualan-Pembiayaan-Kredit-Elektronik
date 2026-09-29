@@ -30,11 +30,11 @@ class Survey extends Model
 
     public function salesOrder(): BelongsTo
     {
-        return $this->belongsTo(SalesOrder::class);
+        return $this->belongsTo(SalesOrder::class)->withTrashed();
     }
 
     public function surveyor(): BelongsTo
     {
-        return $this->belongsTo(Karyawan::class, 'surveyor_id');
+        return $this->belongsTo(Karyawan::class, 'surveyor_id')->withTrashed();
     }
 }

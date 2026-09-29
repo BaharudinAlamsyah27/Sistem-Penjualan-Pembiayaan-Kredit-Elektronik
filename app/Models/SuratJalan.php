@@ -38,11 +38,11 @@ class SuratJalan extends Model
 
     public function salesOrder(): BelongsTo
     {
-        return $this->belongsTo(SalesOrder::class);
+        return $this->belongsTo(SalesOrder::class)->withTrashed();
     }
 
     public function driver(): BelongsTo
     {
-        return $this->belongsTo(Karyawan::class, 'driver_id');
+        return $this->belongsTo(Karyawan::class, 'driver_id')->withTrashed();
     }
 }

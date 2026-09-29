@@ -26,6 +26,6 @@ class StokBarang extends Model
 
     public function barang(): BelongsTo
     {
-        return $this->belongsTo(Barang::class);
+        return $this->belongsTo(Barang::class)->withTrashed();
     }
 }

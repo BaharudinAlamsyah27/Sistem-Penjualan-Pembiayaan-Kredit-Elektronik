@@ -1,59 +1,31 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# NexaERP
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+NexaERP adalah aplikasi ERP internal untuk penjualan barang elektronik secara kredit, stok per cabang, survei pelanggan, penerimaan angsuran, laporan, dan cetak dokumen.
 
-## About Laravel
+## Mulai lokal (Laragon)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+1. Pastikan PHP 8.2+, Composer, Node.js LTS, dan MySQL aktif.
+2. Salin `.env.example` menjadi `.env`, isi konfigurasi MySQL lokal, lalu jalankan `composer install`.
+3. Jalankan `php artisan key:generate`.
+4. Jalankan migration dan seeder hanya pada database lokal kosong: `php artisan migrate:fresh --seed`.
+5. Jalankan `npm ci`, lalu `npm run build` (atau `npm run dev` saat mengembangkan CSS/JS).
+6. Buka proyek melalui Laragon atau `php artisan serve`.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+> `migrate:fresh` menghapus seluruh tabel database yang dikonfigurasi. Jangan jalankan pada database berisi data penting atau produksi.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Dokumen proyek
 
-## Learning Laravel
+- [Superbook pengguna dan teknis](docs/SUPERBOOK-NEXAERP.md)
+- [PDF Superbook](output/pdf/Superbook-NexaERP.pdf)
+- [Panduan pengguna singkat](docs/PANDUAN.md)
+- [Panduan deploy cPanel](docs/DEPLOY-CPANEL.md)
+- [Status fase dan keputusan](docs/PROGRESS.md)
+- `AGENTS.md` adalah aturan proyek dan sumber kebenaran kebutuhan.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Verifikasi perubahan
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Jalankan test fokus yang sesuai dengan perubahan, misalnya `php artisan test --compact tests/Feature/Fase5Test.php`. Pastikan test memakai database khusus test, bukan database Laragon/produksi.
 
-## Laravel Sponsors
+## Catatan teknis
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Versi dependency backend di `composer.json` saat ini Laravel `^12.0`, meskipun spesifikasi awal menyebut Laravel 11. Jangan menurunkan/menaikkan versi framework tanpa menilai kompatibilitas dependency dan hosting.

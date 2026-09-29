@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Barang;
+use App\Models\Cabang;
+use App\Models\Karyawan;
 use App\Models\Pelanggan;
 use App\Models\StokBarang;
 use App\Models\User;
@@ -60,5 +62,22 @@ class Fase3Test extends TestCase
         $admin = User::where('email', 'admin@nexa.com')->firstOrFail();
         $this->actingAs($admin)->post(route('karyawan.store'), ['kode' => 'KRY-X', 'nama' => 'Petugas', 'jabatan' => 'driver'])->assertSessionHasErrors('cabang_id');
         $this->actingAs($admin)->post(route('pelanggan.store'), ['kode' => 'PLG-X', 'nama' => 'Calon', 'alamat' => 'Jl. X', 'kabupaten' => 'Sragen', 'kecamatan' => 'Gesi'])->assertSessionHasErrors('cabang_id');
+    }
+
+    public function test_branch_with_soft_deleted_history_cannot_be_hard_deleted(): void
+    {
+        $admin = User::where('email', 'admin@nexa.com')->firstOrFail();
+        $branch = Cabang::create(['kode' => 'CAB-ARSIP', 'nama' => 'Cabang Arsip', 'aktif' => false]);
+        $employee = Karyawan::create([
+            'cabang_id' => $branch->id, 'kode' => 'KRY-ARSIP', 'nama' => 'Petugas Arsip',
+            'jabatan' => 'driver', 'aktif' => false,
+        ]);
+        $employee->delete();
+
+        $this->actingAs($admin)->delete(route('cabang.destroy', $branch))
+            ->assertRedirect()->assertSessionHas('error');
+
+        $this->assertDatabaseHas('cabangs', ['id' => $branch->id]);
+        $this->assertSoftDeleted('karyawans', ['id' => $employee->id]);
     }
 }

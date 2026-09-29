@@ -63,4 +63,28 @@ class PerbaikanPenggunaTest extends TestCase
         $this->assertDatabaseHas('surat_jalans', ['id' => $ttb->id, 'status_verifikasi' => 'terverifikasi']);
         $this->assertDatabaseHas('activity_log', ['subject_type' => SuratJalan::class, 'subject_id' => $ttb->id, 'log_name' => 'surat_jalan']);
     }
+
+    public function test_soft_deleted_master_records_remain_visible_in_sales_order_history(): void
+    {
+        $admin = User::where('email', 'gesi@nexa.com')->firstOrFail();
+        $pelanggan = Pelanggan::where('cabang_id', $admin->cabang_id)->firstOrFail();
+        $barang = Barang::where('kode', 'BRG-KLK-01')->firstOrFail();
+        $sales = Karyawan::where('cabang_id', $admin->cabang_id)->where('jabatan', 'sales')->firstOrFail();
+        $so = SalesOrder::create([
+            'cabang_id' => $admin->cabang_id, 'no_so' => 'SO-ARSIP-001', 'tanggal' => now()->toDateString(),
+            'pelanggan_id' => $pelanggan->id, 'barang_id' => $barang->id, 'qty' => 1, 'sales_id' => $sales->id,
+            'harga_jual' => 4000000, 'dp' => 800000, 'tenor' => 12, 'bunga_persen' => 1.5,
+            'pokok_piutang' => 3200000, 'total_margin' => 576000, 'total_kredit' => 3776000,
+            'angsuran_per_bulan' => 314667, 'status' => 'survey', 'created_by' => $admin->id,
+        ]);
+
+        $pelanggan->delete();
+        $barang->delete();
+        $sales->delete();
+
+        $history = SalesOrder::with(['pelanggan', 'barang', 'sales'])->findOrFail($so->id);
+        $this->assertSame('Bpk. Sudirman', $history->pelanggan->nama);
+        $this->assertSame('Kulkas 2 Pintu Merk XYZ', $history->barang->nama);
+        $this->assertSame('Andi', $history->sales->nama);
+    }
 }

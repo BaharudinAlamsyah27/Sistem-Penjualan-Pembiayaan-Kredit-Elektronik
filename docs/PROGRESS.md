@@ -242,3 +242,11 @@
 - 2026-09-29: Cetak empat dokumen dan pratinjau kalibrasi kwitansi ditambahkan; template pengganti dari admin otomatis dipakai.
 - 2026-09-29: Posisi awal template memakai ukuran 297 × 187 mm berdasar rasio gambar; satu uji cetak fisik diperlukan untuk penyetelan printer.
 - 2026-09-29: Pendaftaran akun publik dinonaktifkan karena aplikasi hanya memakai dua peran admin dan belum menyediakan alur aman pembuatan user.
+- 2026-09-29: Audit menemukan login sebelumnya tidak memeriksa `users.aktif`; autentikasi kini mensyaratkan akun aktif dan memiliki test regresi.
+- 2026-09-29: Penghapusan cabang kini memeriksa semua tabel ber-`cabang_id`, termasuk baris soft-delete, agar FK cascade tidak menghapus riwayat. Ada test regresi.
+- 2026-09-29: Relasi transaksi dan stok tetap membaca data master soft-delete untuk menjaga informasi historis; test SO mengarsipkan pelanggan, barang, dan sales.
+- 2026-09-29: Berkas tanpa route/pemanggil dihapus: controller/view register publik, partial cetak lama, dan view placeholder yatim. README Laravel bawaan diganti panduan proyek.
+- 2026-09-29 (temuan audit, belum diperbaiki): `KreditService`, `LabaService`, dan agregasi laporan memakai PHP `float` untuk nominal. Perlu refaktor aritmetika desimal/integer cents dan uji pembulatan sebelum penggunaan finansial produksi.
+- 2026-09-29 (temuan audit): Beberapa label autentikasi masih bahasa Inggris dari scaffold Breeze; lokalisasi UI menyeluruh perlu dirapikan.
+- 2026-09-29 (temuan audit): Versi framework aktual Laravel 12 (`composer.json`) berbeda dari spesifikasi Laravel 11; keputusan kompatibilitas hosting perlu dibuat sebelum deploy.
+- 2026-09-29: Verifikasi fokus pasca-audit (`Fase3Test`, `PerbaikanPenggunaTest`, `AuthenticationTest`, `Fase5Test`) sukses: 15 test / 71 assertions; warning PHPUnit hanya karena `.env` tidak tersedia di worktree.
