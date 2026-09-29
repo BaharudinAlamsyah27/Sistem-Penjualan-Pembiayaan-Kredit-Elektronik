@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\MutasiStok;
 use App\Models\StokBarang;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class StokService
 {
@@ -20,6 +21,36 @@ class StokService
                 'cabang_id' => $cabangId, 'barang_id' => $barangId, 'tipe' => 'masuk', 'qty' => $qty,
                 'referensi_type' => $referensiType, 'referensi_id' => $referensiId,
                 'tanggal' => now()->toDateString(), 'keterangan' => $keterangan, 'user_id' => auth()->id(),
+            ]);
+        });
+    }
+
+    public function kurangi(int $cabangId, int $barangId, int $qty, ?string $referensiType = null, ?int $referensiId = null, ?string $keterangan = null): void
+    {
+        DB::transaction(function () use ($cabangId, $barangId, $qty, $referensiType, $referensiId, $keterangan) {
+            $stok = StokBarang::query()
+                ->where('cabang_id', $cabangId)
+                ->where('barang_id', $barangId)
+                ->lockForUpdate()
+                ->first();
+
+            if (! $stok || $stok->qty < $qty) {
+                throw ValidationException::withMessages([
+                    'stok' => 'Stok barang tidak mencukupi untuk menerbitkan faktur.',
+                ]);
+            }
+
+            $stok->decrement('qty', $qty);
+            MutasiStok::create([
+                'cabang_id' => $cabangId,
+                'barang_id' => $barangId,
+                'tipe' => 'keluar',
+                'qty' => $qty,
+                'referensi_type' => $referensiType,
+                'referensi_id' => $referensiId,
+                'tanggal' => now()->toDateString(),
+                'keterangan' => $keterangan,
+                'user_id' => auth()->id(),
             ]);
         });
     }

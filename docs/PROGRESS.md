@@ -137,6 +137,24 @@
 - `php artisan test --compact tests/Feature/Fase4Test.php` -> 1 alur inti lulus (17 assertions), mencakup render form, hitung kredit contoh, penomoran SO, dan penolakan ketika hasil survei tidak layak.
 - Atas arahan pengguna, test dibatasi ke alur inti fase aktif; suite lama Fase 1/2 tidak dijalankan ulang.
 
+## Fase 5 — Faktur & Jadwal Angsuran
+
+### Tugas
+- [x] Terbitkan faktur hanya untuk SO dengan survei layak, dalam transaksi database.
+- [x] Kunci dan validasi stok; kurangi stok lewat `StokService` dan catat mutasi keluar.
+- [x] Buat pembayaran DP berstatus lunas dan jadwal angsuran dengan total tepat, penyesuaian angsuran terakhir, serta jatuh tempo tanpa lompat bulan.
+- [x] Buat surat jalan berisi driver, tanggal kirim, dan nota; sediakan konfirmasi barang terkirim.
+- [x] Tambahkan otorisasi, validasi, tampilan tahap faktur/pengiriman, dan daftar surat jalan.
+
+### Keputusan Fase 5
+- Stok berkurang saat faktur diterbitkan sesuai urutan proses pada bagian 7.3; keputusan bisnis ini tetap perlu dikonfirmasi pemilik.
+- Penerbitan mencatat DP lunas pada tanggal DP, sesuai rancangan proses. TTB MVP hanya menyimpan driver, tanggal kirim, dan nota; BPV belum ditambahkan karena artinya belum ditetapkan.
+
+### Cara Uji Fase 5
+- `php artisan test --compact tests/Feature/Fase5Test.php` -> 2 skenario inti lulus (20 assertions): jadwal presisi/tanggal akhir bulan, mutasi stok, status terkirim, dan transaksi batal bila stok kurang.
+- Suite penuh dan formatter tidak dijalankan: sesuai arahan hemat token; perintah `php artisan pint --dirty` tidak tersedia karena Pint belum terpasang.
+- `.env` tidak tersedia di checkout; test memakai `APP_KEY` sementara hanya untuk proses test.
+
 ## Pertanyaan Terbuka (dari GEMINI.md bagian 14)
 
 | # | Pertanyaan | Status |

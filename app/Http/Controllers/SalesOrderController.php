@@ -86,7 +86,7 @@ class SalesOrderController extends Controller
 
     public function show(SalesOrder $sales_order): View
     {
-        $sales_order->load(['pelanggan', 'barang', 'sales', 'survey.surveyor']);
+        $sales_order->load(['pelanggan', 'barang', 'sales', 'survey.surveyor', 'faktur.angsurans', 'suratJalan.driver']);
 
         return view('sales-order.show', ['salesOrder' => $sales_order]);
     }

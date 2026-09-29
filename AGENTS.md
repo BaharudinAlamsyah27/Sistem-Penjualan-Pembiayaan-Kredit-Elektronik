@@ -6,9 +6,9 @@
 
 ## 0. Cara Kerja Agent (WAJIB)
 
-1. **Kerjakan satu fase per permintaan.** Jangan melompat ke fase berikutnya sebelum pengguna menyuruh.
+1. **Kerjakan fase secara berurutan.** Jika pengguna secara eksplisit meminta beberapa fase, tuntaskan satu per satu sesuai urutan; jangan melompat atau menggabungkan kriteria selesai.
 2. **Sebelum menulis kode**, buat rencana singkat (daftar file yang akan dibuat/diubah). Untuk fase besar, tunggu persetujuan jika mode Planning tersedia.
-3. **Setelah selesai**, jalankan `php artisan migrate:fresh --seed` (jika ada perubahan DB) dan `php artisan test`, lalu laporkan hasilnya singkat: apa yang dibuat, cara mengujinya, dan apa yang belum selesai.
+3. **Setelah selesai**, jalankan `php artisan migrate:fresh --seed` (jika ada perubahan DB) dan pengujian. Jika pengguna meminta penghematan test, jalankan hanya test inti yang relevan dengan fase aktif; laporkan batas verifikasi dengan singkat.
 4. **Jangan mengubah file di luar lingkup fase.** Jika menemukan masalah di fase lain, catat di `docs/PROGRESS.md` bagian "Catatan/Masalah", jangan langsung diperbaiki.
 5. **Perbarui `docs/PROGRESS.md`** di akhir setiap fase (centang tugas, tulis keputusan baru).
 6. **Commit git per fase** dengan pesan `fase-N: ringkasan`.

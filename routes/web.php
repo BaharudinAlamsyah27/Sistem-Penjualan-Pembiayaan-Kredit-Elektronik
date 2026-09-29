@@ -6,9 +6,11 @@ use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\PenerbitanFakturController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\SuratJalanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -36,11 +38,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sales-order/create', [SalesOrderController::class, 'create'])->name('sales-order.create');
     Route::post('/sales-order', [SalesOrderController::class, 'store'])->name('sales-order.store');
     Route::get('/sales-order/{sales_order}', [SalesOrderController::class, 'show'])->name('sales-order.show');
+    Route::get('/sales-order/{sales_order}/faktur/create', [PenerbitanFakturController::class, 'create'])->name('sales-order.faktur.create');
+    Route::post('/sales-order/{sales_order}/faktur', [PenerbitanFakturController::class, 'store'])->name('sales-order.faktur.store');
+    Route::post('/sales-order/{sales_order}/terkirim', [PenerbitanFakturController::class, 'tandaiTerkirim'])->name('sales-order.terkirim');
     Route::get('/survey', [SurveyController::class, 'index'])->name('survey.index');
     Route::get('/survey/{survey}/edit', [SurveyController::class, 'edit'])->name('survey.edit');
     Route::put('/survey/{survey}', [SurveyController::class, 'update'])->name('survey.update');
     Route::get('/angsuran', fn () => view('placeholder', ['title' => 'Penerimaan Angsuran']))->name('angsuran.index');
-    Route::get('/surat-jalan', fn () => view('placeholder', ['title' => 'Surat Jalan (TTB)']))->name('surat-jalan.index');
+    Route::get('/surat-jalan', [SuratJalanController::class, 'index'])->name('surat-jalan.index');
     Route::get('/laporan/laba-rugi', fn () => view('placeholder', ['title' => 'Laporan Laba / Rugi']))->name('laporan.laba-rugi');
     Route::get('/laporan/tagihan', fn () => view('placeholder', ['title' => 'Laporan Tagihan']))->name('laporan.tagihan');
 });
