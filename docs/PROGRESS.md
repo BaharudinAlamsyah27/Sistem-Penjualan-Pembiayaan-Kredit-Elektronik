@@ -216,5 +216,5 @@
 
 - 2026-09-29 (Fase 2): Seluruh 36 test fitur lulus tanpa error. Desain visual dashboard dan sidebar telah disesuaikan dengan foto acuan `dashboard.png`.
 - 2026-09-29: Form pembelian dan karyawan menghasilkan PHP Blade yang tidak valid karena `@enderror@endif` berdekatan; form pelanggan juga memiliki pola sama. View ditulis ulang dan file hasil kompilasi terkait lolos `php -l`.
-- 2026-09-29: Daftar barang menampilkan saldo stok per cabang dan form edit menampilkan ringkasan stok. Perubahan jumlah tetap harus dicatat lewat pembelian/`StokService` agar mutasi stok tidak terlewati.
+- 2026-09-29: CRUD barang menampilkan dan menerima saldo baru per cabang. Koreksi dicatat melalui `StokService` sebagai mutasi `penyesuaian`; penerimaan stok supplier tetap melalui pembelian.
 - 2026-09-29: TTB kini memiliki aksi admin untuk mengubah status menunggu menjadi terverifikasi; perubahan dicatat oleh activity log.

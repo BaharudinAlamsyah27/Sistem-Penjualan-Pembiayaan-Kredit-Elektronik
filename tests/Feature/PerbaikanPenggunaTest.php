@@ -30,6 +30,14 @@ class PerbaikanPenggunaTest extends TestCase
         $this->actingAs($admin)->get(route('karyawan.create'))->assertOk()->assertSee('Tambah Karyawan');
         $this->actingAs($admin)->get(route('barang.index'))->assertOk()->assertSee('Stok per Cabang');
         $this->actingAs($admin)->get(route('barang.edit', $barang))->assertOk()->assertSee('10 unit');
+
+        $this->actingAs($admin)->put(route('barang.update', $barang), [
+            'kode' => $barang->kode, 'nama' => $barang->nama, 'merk' => $barang->merk,
+            'kategori' => $barang->kategori, 'harga_beli' => $barang->harga_beli, 'harga_jual' => $barang->harga_jual,
+            'aktif' => 1, 'stok' => [$admin->cabang_id => 14],
+        ])->assertRedirect(route('barang.index'));
+        $this->assertDatabaseHas('stok_barangs', ['cabang_id' => $admin->cabang_id, 'barang_id' => $barang->id, 'qty' => 14]);
+        $this->assertDatabaseHas('mutasi_stoks', ['cabang_id' => $admin->cabang_id, 'barang_id' => $barang->id, 'tipe' => 'penyesuaian', 'qty' => 4]);
     }
 
     public function test_branch_admin_can_verify_pending_delivery_and_change_is_logged(): void

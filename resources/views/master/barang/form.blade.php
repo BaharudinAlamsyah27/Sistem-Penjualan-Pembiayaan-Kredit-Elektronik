@@ -32,24 +32,26 @@
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
                     <h3 class="font-semibold">Stok per Cabang</h3>
-                    <p class="text-xs text-gray-500">Stok bertambah lewat transaksi pembelian agar mutasi inventori tercatat.</p>
+                    <p class="text-xs text-gray-500">Koreksi saldo dicatat sebagai mutasi penyesuaian. Stok masuk dari supplier tetap dicatat melalui pembelian.</p>
                 </div>
                 <a href="{{ route('pembelian.create') }}" class="rounded-lg border bg-white px-3 py-2 text-sm text-[#2557a7]">Catat Pembelian</a>
             </div>
 
-            @if($barang->exists)
+            @if($cabangsStok->isNotEmpty())
                 <div class="mt-3 divide-y rounded-lg border bg-white">
-                    @forelse($stokBarangs as $stok)
-                        <div class="flex justify-between gap-3 px-3 py-2 text-sm">
-                            <span>{{ $stok->cabang?->nama ?? 'Cabang' }}</span>
-                            <span class="font-semibold">{{ number_format($stok->qty, 0, ',', '.') }} unit</span>
-                        </div>
-                    @empty
-                        <p class="px-3 py-3 text-sm text-gray-500">Belum ada saldo stok. Catat pembelian untuk menambahkan stok.</p>
-                    @endforelse
+                    @foreach($cabangsStok as $cabang)
+                        <label class="flex flex-wrap items-center justify-between gap-3 px-3 py-2 text-sm">
+                            <span>{{ $cabang->nama }} <span class="text-gray-500">(saldo saat ini: {{ number_format((int) ($saldoStok[$cabang->id] ?? 0), 0, ',', '.') }} unit)</span></span>
+                            <span class="flex items-center gap-2">Saldo baru
+                                <input type="number" name="stok[{{ $cabang->id }}]" min="0" max="99999999" required
+                                       value="{{ old('stok.'.$cabang->id, $saldoStok[$cabang->id] ?? 0) }}"
+                                       class="w-28 rounded-lg border-gray-300 text-sm">
+                            </span>
+                        </label>
+                    @endforeach
                 </div>
             @else
-                <p class="mt-3 rounded-lg border bg-white px-3 py-3 text-sm text-gray-500">Saldo awal barang akan tercatat saat pembelian pertama disimpan.</p>
+                <p class="mt-3 rounded-lg border bg-white px-3 py-3 text-sm text-gray-500">Tidak ada cabang yang dapat dikelola akun ini.</p>
             @endif
         </section>
 
