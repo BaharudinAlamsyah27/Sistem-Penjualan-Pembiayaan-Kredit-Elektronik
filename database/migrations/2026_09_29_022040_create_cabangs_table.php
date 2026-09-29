@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('cabangs', function (Blueprint $table) {
             $table->id();
+            $table->string('kode', 20)->unique();
+            $table->string('nama', 100);
+            $table->text('alamat')->nullable();
+            $table->string('no_hp', 30)->nullable();
+            $table->boolean('aktif')->default(true);
             $table->timestamps();
         });
     }
