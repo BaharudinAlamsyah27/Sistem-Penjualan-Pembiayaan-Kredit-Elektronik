@@ -221,6 +221,14 @@
 | 5 | Kapan stok berkurang: saat faktur terbit atau saat terkirim? | Belum dijawab |
 | 6 | Template kwitansi/nota klien | Gambar unggahan dipakai sebagai acuan atas instruksi pengguna; ukuran/posisi final perlu uji cetak fisik |
 
+## Fase 9 — Pengerasan & Deploy
+
+- [x] Panduan pengguna ringkas: `docs/PANDUAN.md`.
+- [x] Panduan deploy cPanel, `APP_DEBUG=false`, perlindungan `.env`, HTTPS, backup, build frontend, dan migrasi produksi: `docs/DEPLOY-CPANEL.md`.
+- [x] Audit akses: pendaftaran publik dinonaktifkan; endpoint cetak mengikuti policy cabang; file template tetap privat dan pratinjau hanya untuk admin pusat.
+- [x] Pertahankan validasi Form Request serta pencatatan perubahan stok melalui `StokService`.
+- [x] Test fokus perubahan aktif lulus; suite penuh tidak diulang sesuai arahan penghematan token.
+
 ---
 
 ## Catatan / Masalah
@@ -229,3 +237,6 @@
 - 2026-09-29: Form pembelian dan karyawan menghasilkan PHP Blade yang tidak valid karena `@enderror@endif` berdekatan; form pelanggan juga memiliki pola sama. View ditulis ulang dan file hasil kompilasi terkait lolos `php -l`.
 - 2026-09-29: CRUD barang menampilkan dan menerima saldo baru per cabang. Koreksi dicatat melalui `StokService` sebagai mutasi `penyesuaian`; penerimaan stok supplier tetap melalui pembelian.
 - 2026-09-29: TTB kini memiliki aksi admin untuk mengubah status menunggu menjadi terverifikasi; perubahan dicatat oleh activity log.
+- 2026-09-29: Cetak empat dokumen dan pratinjau kalibrasi kwitansi ditambahkan; template pengganti dari admin otomatis dipakai.
+- 2026-09-29: Posisi awal template memakai ukuran 297 × 187 mm berdasar rasio gambar; satu uji cetak fisik diperlukan untuk penyetelan printer.
+- 2026-09-29: Pendaftaran akun publik dinonaktifkan karena aplikasi hanya memakai dua peran admin dan belum menyediakan alur aman pembuatan user.
