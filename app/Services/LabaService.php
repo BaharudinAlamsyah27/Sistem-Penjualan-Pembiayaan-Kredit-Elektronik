@@ -2,15 +2,13 @@
 
 namespace App\Services;
 
-use App\Models\SalesOrder;
+use App\Models\Angsuran;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 
 class LabaService
 {
     /**
-     * MVP: laba bersih = jumlah total_margin SO berstatus terkirim pada periode.
-     * Definisi ini sementara dan mudah diganti.
+     * MVP: margin diakui sebanding dengan pembayaran angsuran yang lunas.
      *
      * @return array{nominal: float, nominal_lalu: float, persen: float|null, keterangan: string}
      */
@@ -23,13 +21,8 @@ class LabaService
         $awalBulanLalu = $acuan->copy()->subMonthNoOverflow()->startOfMonth();
         $akhirBulanLalu = $acuan->copy()->subMonthNoOverflow()->endOfMonth();
 
-        $nominal = (float) static::queryTerkirim($cabangId)
-            ->whereBetween('tanggal', [$awalBulanIni->toDateString(), $akhirBulanIni->toDateString()])
-            ->sum('total_margin');
-
-        $nominalLalu = (float) static::queryTerkirim($cabangId)
-            ->whereBetween('tanggal', [$awalBulanLalu->toDateString(), $akhirBulanLalu->toDateString()])
-            ->sum('total_margin');
+        $nominal = static::marginTerbayar($cabangId, $awalBulanIni, $akhirBulanIni);
+        $nominalLalu = static::marginTerbayar($cabangId, $awalBulanLalu, $akhirBulanLalu);
 
         $persen = null;
         if ($nominalLalu > 0) {
@@ -39,7 +32,7 @@ class LabaService
         } elseif ($nominal > 0) {
             $keterangan = 'Belum ada data bulan lalu';
         } else {
-            $keterangan = 'Belum ada penjualan terkirim bulan ini';
+            $keterangan = 'Belum ada angsuran lunas bulan ini';
         }
 
         return [
@@ -50,10 +43,22 @@ class LabaService
         ];
     }
 
-    private static function queryTerkirim(?int $cabangId): Builder
+    private static function marginTerbayar(?int $cabangId, Carbon $awal, Carbon $akhir): float
     {
-        return SalesOrder::query()
-            ->where('status', 'terkirim')
-            ->when($cabangId, fn (Builder $q) => $q->where('cabang_id', $cabangId));
+        return Angsuran::query()
+            ->with('faktur.salesOrder')
+            ->where('jenis', 'angsuran')
+            ->where('status', 'lunas')
+            ->whereBetween('tgl_bayar', [$awal->toDateString(), $akhir->toDateString()])
+            ->when($cabangId, fn ($q) => $q->where('cabang_id', $cabangId))
+            ->get()
+            ->sum(function (Angsuran $angsuran): float {
+                $so = $angsuran->faktur?->salesOrder;
+                $total = (float) ($so?->total_kredit ?? 0);
+
+                return $total > 0
+                    ? (float) $angsuran->nominal_dibayar * ((float) $so->total_margin / $total)
+                    : 0.0;
+            });
     }
 }

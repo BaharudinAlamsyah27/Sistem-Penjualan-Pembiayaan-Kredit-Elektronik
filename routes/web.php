@@ -8,6 +8,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PenerimaanAngsuranController;
 use App\Http\Controllers\LaporanTagihanController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PenerbitanFakturController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalesOrderController;
@@ -50,7 +51,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/angsuran/{angsuran}', [PenerimaanAngsuranController::class, 'store'])->name('angsuran.store');
     Route::put('/angsuran/{angsuran}', [PenerimaanAngsuranController::class, 'update'])->name('angsuran.update');
     Route::get('/surat-jalan', [SuratJalanController::class, 'index'])->name('surat-jalan.index');
-    Route::get('/laporan/laba-rugi', fn () => view('placeholder', ['title' => 'Laporan Laba / Rugi']))->name('laporan.laba-rugi');
+    Route::get('/laporan/penjualan', [LaporanController::class, 'penjualan'])->name('laporan.penjualan');
+    Route::get('/laporan/kolektor', [LaporanController::class, 'kolektor'])->name('laporan.kolektor');
+    Route::get('/laporan/laba-rugi', [LaporanController::class, 'labaRugi'])->name('laporan.laba-rugi');
+    Route::get('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
     Route::get('/laporan/tagihan', [LaporanTagihanController::class, 'index'])->name('laporan.tagihan');
 });
 

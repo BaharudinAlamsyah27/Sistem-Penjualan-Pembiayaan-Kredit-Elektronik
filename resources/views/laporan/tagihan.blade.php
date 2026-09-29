@@ -1,6 +1,6 @@
 <x-app-layout>
     @section('title', 'Laporan Tagihan')
-    <div class="mb-5"><h2 class="text-xl font-semibold">Laporan Tagihan Angsuran</h2><p class="text-sm text-gray-500">Telusuri jadwal, pembayaran, kolektor, dan wilayah pelanggan.</p></div>
+    <div class="mb-5 flex flex-wrap items-start justify-between gap-3"><div><h2 class="text-xl font-semibold">Laporan Tagihan Angsuran</h2><p class="text-sm text-gray-500">Telusuri jadwal, pembayaran, kolektor, dan wilayah pelanggan.</p></div><div class="flex gap-2"><a href="{{ route('laporan.penjualan') }}" class="rounded-lg border px-3 py-2 text-sm">Penjualan per Sales</a><a href="{{ route('laporan.kolektor') }}" class="rounded-lg border px-3 py-2 text-sm">Tagihan per Kolektor</a></div></div>
     <form method="GET" class="mb-4 grid grid-cols-1 gap-3 rounded-xl border bg-white p-4 sm:grid-cols-2 lg:grid-cols-3">
         <label class="text-xs text-gray-500">Bulan jatuh tempo<input type="month" name="bulan" value="{{ $filters['bulan'] ?? '' }}" class="mt-1 block w-full rounded-lg border-gray-300 text-sm"></label>
         <label class="text-xs text-gray-500">Kolektor<select name="kolektor" class="mt-1 block w-full rounded-lg border-gray-300 text-sm"><option value="">Semua kolektor</option>@foreach($kolektors as $k)<option value="{{ $k->id }}" @selected((string)($filters['kolektor'] ?? '')===(string)$k->id)>{{ $k->nama }}</option>@endforeach</select></label>

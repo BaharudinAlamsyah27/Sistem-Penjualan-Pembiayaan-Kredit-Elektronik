@@ -172,6 +172,23 @@
 - `php artisan test --compact tests/Feature/Fase6Test.php` -> alur pembayaran, status faktur, larangan koreksi oleh admin cabang, koreksi oleh admin pusat + activity log, dan laporan lulus (9 assertions).
 - Tidak menjalankan suite penuh atas arahan penghematan token.
 
+## Fase 7 — Laporan Dasar
+
+### Tugas
+- [x] Laporan penjualan terkirim per sales (jumlah SO, nilai penjualan, margin kredit).
+- [x] Laporan tagihan per kolektor (tagihan, pembayaran, dan tunggakan lewat jatuh tempo).
+- [x] Ekspor CSV berbahasa Indonesia untuk ringkasan penjualan dan kolektor.
+- [x] LabaService menghitung margin yang diakui secara proporsional dari pembayaran angsuran lunas; kartu dashboard memakai layanan yang sama.
+
+### Keputusan Fase 7
+- Rumus margin MVP per pembayaran = nominal yang diterima × (total margin SO ÷ total kredit SO). Ini mengalokasikan margin sepanjang angsuran lunas, bukan mengklaim laba akuntansi final; definisi final tetap pertanyaan terbuka.
+- Ringkasan penjualan menghitung SO terkirim pada tanggal transaksi; ringkasan kolektor mengikuti tanggal jatuh tempo.
+
+### Cara Uji Fase 7
+- `php artisan test --compact tests/Feature/Fase7Test.php` -> 1 alur inti lulus (14 assertions), memeriksa nominal kedua laporan, alokasi margin, ekspor CSV, dan halaman laba/rugi.
+- `php artisan route:list --path=laporan --except-vendor` memastikan kelima rute laporan terdaftar; sintaks PHP dan `git diff --check` bersih.
+- Suite penuh tidak dijalankan atas arahan penghematan token.
+
 ## Pertanyaan Terbuka (dari GEMINI.md bagian 14)
 
 | # | Pertanyaan | Status |
