@@ -11,7 +11,7 @@
 | 0 | Persiapan | ✅ Selesai | 2026-09-29 |
 | 1 | Database, Seeder, Peran | ✅ Selesai | 2026-09-29 |
 | 2 | Layout & Dashboard | ✅ Selesai | 2026-09-29 |
-| 3 | Data Master | ⏳ Belum dimulai | — |
+| 3 | Data Master | ✅ Selesai | 2026-09-29 |
 | 4 | Sales Order & Survei | ⏳ Belum dimulai | — |
 | 5 | Faktur & Jadwal Angsuran | ⏳ Belum dimulai | — |
 | 6 | Penerimaan Angsuran & Tagihan | ⏳ Belum dimulai | — |
@@ -94,6 +94,30 @@
    - Coba buka `/cabang` -> muncul 403 Forbidden.
 
 ---
+
+## Fase 3 — Data Master
+
+### Tugas
+- [x] CRUD Cabang khusus `admin_pusat`, dengan perlindungan agar cabang berisi data operasional tidak dapat dihapus.
+- [x] CRUD Karyawan per cabang; jabatan hanya berupa data karyawan, tanpa membuat akun login.
+- [x] CRUD Pelanggan, termasuk kabupaten/kecamatan, pencarian, filter, dan sortir.
+- [x] CRUD master Barang global dengan tampilan stok berdasarkan cabang.
+- [x] Catat Pembelian metode `cashmoney` atau `tempo`; total dihitung server, stok bertambah melalui `StokService`, dan mutasi `masuk` tercatat.
+- [x] Policies, middleware peran, Form Request, dan validasi berbahasa Indonesia untuk modul Fase 3.
+- [x] Feature test Fase 3 untuk isolasi cabang, hak akses, kewajiban memilih cabang, dan mutasi stok.
+
+### Keputusan Fase 3
+- Nomor pembelian sementara memakai format `PB-YYYYMMDDHHMMSS-NNN`, karena format khusus belum ditetapkan. Penomoran konsisten dapat dialihkan ke `NomorDokumenService` bila diperlukan.
+- Tidak ada perubahan skema database pada fase ini; tabel master dan pembelian dari Fase 1 telah mencukupi.
+
+### Cara Uji Fase 3
+1. `php artisan test --compact tests/Feature/Fase3Test.php` -> 4 skenario lulus (16 assertions).
+2. `php artisan route:list --except-vendor` -> CRUD master dan rute pembelian terdaftar.
+3. Pembelian menambah stok cabang dan menulis satu mutasi stok bertipe `masuk`.
+
+### Catatan Pengujian
+- Seluruh suite `php artisan test --compact` masih memiliki 6 kegagalan dari test Fase 1/2 yang mencari akun/cabang `solo`/`CAB-SOLO` dan isi dashboard lama; seeder saat ini memakai Gesi dan Gemolong. Test Fase 3 lulus. Perbaikan seeder/test Fase 1/2 dicatat untuk fase terkait dan tidak diubah di sini.
+- Checkout tidak memiliki `.env` atau dependensi npm. Kunci aplikasi sementara diberikan hanya melalui environment proses saat test; tidak disimpan ke file.
 
 ## Pertanyaan Terbuka (dari GEMINI.md bagian 14)
 

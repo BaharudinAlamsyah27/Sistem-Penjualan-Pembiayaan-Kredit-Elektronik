@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pembelian extends Model
 {
-    use HasFactory, BelongsToCabang, SoftDeletes;
+    use BelongsToCabang, HasFactory, SoftDeletes;
 
     protected $fillable = [
         'cabang_id',
@@ -39,5 +39,10 @@ class Pembelian extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function cabang(): BelongsTo
+    {
+        return $this->belongsTo(Cabang::class);
     }
 }
