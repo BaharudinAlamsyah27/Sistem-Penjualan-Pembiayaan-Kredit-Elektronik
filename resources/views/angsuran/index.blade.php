@@ -24,6 +24,7 @@
                     <select name="kolektor_id" class="col-span-2 rounded border-gray-300 text-xs"><option value="">Tanpa kolektor</option>@foreach($kolektors->where('cabang_id',$angsuran->cabang_id) as $kolektor)<option value="{{ $kolektor->id }}" @selected($angsuran->kolektor_id===$kolektor->id)>{{ $kolektor->nama }}</option>@endforeach</select>
                     <button class="col-span-2 rounded border px-3 py-1.5 text-xs">Koreksi pembayaran</button>
                 </form>@endif
+                <a class="mt-2 inline-block text-xs text-blue-700 underline" target="_blank" href="{{ route('cetak.kwitansi',$angsuran) }}">Cetak kwitansi</a>
             @else
                 <form method="POST" action="{{ route('angsuran.store', $angsuran) }}" class="grid min-w-[260px] grid-cols-2 gap-2">@csrf
                     <input type="date" name="tgl_bayar" value="{{ now()->toDateString() }}" required class="rounded border-gray-300 text-xs">

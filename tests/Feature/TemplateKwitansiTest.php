@@ -35,6 +35,9 @@ class TemplateKwitansiTest extends TestCase
         $this->assertIsString($oldPath);
         Storage::disk('local')->assertExists($oldPath);
         $this->actingAs($admin)->get(route('pengaturan.template-kwitansi.preview'))->assertOk();
+        $this->actingAs($admin)->get(route('pengaturan.template-kwitansi.kalibrasi', ['grid' => 1]))
+            ->assertOk()->assertSee('PRATINJAU KALIBRASI')->assertSee('background-size:10mm 10mm', false);
+        $this->actingAs($branchAdmin)->get(route('pengaturan.template-kwitansi.kalibrasi'))->assertForbidden();
 
         $this->actingAs($admin)->post(route('pengaturan.template-kwitansi.upload'), [
             'template' => UploadedFile::fake()->createWithContent('kwitansi-baru.png', $png),

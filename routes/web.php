@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CabangController;
+use App\Http\Controllers\CetakController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PelangganController;
@@ -61,7 +62,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pengaturan/template-kwitansi', [TemplateKwitansiController::class, 'index'])->name('pengaturan.template-kwitansi.index');
     Route::post('/pengaturan/template-kwitansi', [TemplateKwitansiController::class, 'upload'])->name('pengaturan.template-kwitansi.upload');
     Route::get('/pengaturan/template-kwitansi/pratinjau', [TemplateKwitansiController::class, 'preview'])->name('pengaturan.template-kwitansi.preview');
+    Route::get('/pengaturan/template-kwitansi/kalibrasi', [CetakController::class, 'pratinjau'])->name('pengaturan.template-kwitansi.kalibrasi');
     Route::delete('/pengaturan/template-kwitansi', [TemplateKwitansiController::class, 'destroy'])->name('pengaturan.template-kwitansi.destroy');
+    Route::get('/cetak/angsuran/{angsuran}/nota-dp', [CetakController::class, 'notaDp'])->name('cetak.nota-dp');
+    Route::get('/cetak/faktur/{faktur}', [CetakController::class, 'faktur'])->name('cetak.faktur');
+    Route::get('/cetak/angsuran/{angsuran}/kwitansi', [CetakController::class, 'kwitansi'])->name('cetak.kwitansi');
+    Route::get('/cetak/surat-jalan/{suratJalan}', [CetakController::class, 'suratJalan'])->name('cetak.surat-jalan');
 });
 
 require __DIR__.'/auth.php';

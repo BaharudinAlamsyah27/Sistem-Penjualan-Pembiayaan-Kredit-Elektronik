@@ -13,10 +13,10 @@
 | 2 | Layout & Dashboard | ✅ Selesai | 2026-09-29 |
 | 3 | Data Master | ✅ Selesai | 2026-09-29 |
 | 4 | Sales Order & Survei | ✅ Selesai | 2026-09-29 |
-| 5 | Faktur & Jadwal Angsuran | ⏳ Belum dimulai | — |
-| 6 | Penerimaan Angsuran & Tagihan | ⏳ Belum dimulai | — |
-| 7 | Laporan Dasar | ⏳ Belum dimulai | — |
-| 8 | Cetak | ⏳ Belum dimulai | — |
+| 5 | Faktur & Jadwal Angsuran | ✅ Selesai | 2026-09-29 |
+| 6 | Penerimaan Angsuran & Tagihan | ✅ Selesai | 2026-09-29 |
+| 7 | Laporan Dasar | ✅ Selesai | 2026-09-29 |
+| 8 | Cetak | ✅ Selesai* | 2026-09-29 |
 | 9 | Pengerasan & Deploy | ⏳ Belum dimulai | — |
 
 ---
@@ -189,15 +189,26 @@
 - `php artisan route:list --path=laporan --except-vendor` memastikan kelima rute laporan terdaftar; sintaks PHP dan `git diff --check` bersih.
 - Suite penuh tidak dijalankan atas arahan penghematan token.
 
-## Fase 8 — Cetak (prasyarat template sedang disiapkan)
+## Fase 8 — Cetak
 
 ### Selesai sebagai prasyarat non-template
 - [x] Halaman admin pusat untuk mengunggah, melihat pratinjau, mengganti, dan menghapus foto/scan kwitansi.
 - [x] Validasi hanya menerima gambar JPG/JPEG/PNG hingga 10 MB; file disimpan privat, bukan di folder publik.
 - [x] Pengujian inti memastikan admin cabang ditolak dan alur file privat berhasil (12 assertions).
 
-### Belum selesai
-- Kalibrasi koordinat mm, layout cetak Nota DP/Faktur/Kwitansi/Surat Jalan, dan uji pratinjau grid menunggu template kwitansi asli. Gambar contoh sudah diunggah dan terlihat melalui menu **Template Kwitansi**, tetapi belum dipakai untuk kalibrasi final.
+### Tugas
+- [x] Halaman cetak mandiri untuk Nota DP, Faktur, Kwitansi Angsuran, dan Surat Jalan; data transaksi dibatasi lewat policy.
+- [x] Halaman pratinjau template dengan kisi 10 mm opsional; gambar dimuat dari storage privat.
+- [x] Koordinat elemen kwitansi dikumpulkan di `config/cetak.php` dan penggantian template admin langsung berlaku.
+- [x] Tombol cetak ditambahkan ke detail SO dan daftar angsuran.
+
+### Keputusan Fase 8
+- Atas instruksi pengguna, gambar template yang diunggah diperlakukan sebagai template aktif. Ukuran cetak awal diasumsikan 297 × 187 mm berdasarkan proporsi scan; posisi mm merupakan kalibrasi awal dan dapat disetel di konfigurasi dengan pratinjau kisi.
+- Nota DP, faktur, dan surat jalan menggunakan format cetak mandiri; hanya kwitansi angsuran yang memakai scan formulir sebagai latar.
+- Kriteria posisi presisi perlu dikonfirmasi dengan satu cetak fisik pada printer/kertas pengguna. Admin dapat mengganti scan kapan saja; aplikasi otomatis membaca berkas aktif baru tanpa perubahan kode.
+
+### Cara Uji Fase 8
+- Render route cetak/kalibrasi, validasi policy cabang, pratinjau privat, dan `view:cache`; cetak fisik tidak dapat disimulasikan dari checkout ini.
 
 ## Pertanyaan Terbuka (dari GEMINI.md bagian 14)
 
@@ -208,7 +219,7 @@
 | 3 | Apakah pembayaran parsial diizinkan? | Belum dijawab |
 | 4 | Arti pasti BPV dan Nota pada surat jalan | Belum dijawab |
 | 5 | Kapan stok berkurang: saat faktur terbit atau saat terkirim? | Belum dijawab |
-| 6 | Template kwitansi/nota klien | Gambar contoh diterima; template asli masih ditunggu |
+| 6 | Template kwitansi/nota klien | Gambar unggahan dipakai sebagai acuan atas instruksi pengguna; ukuran/posisi final perlu uji cetak fisik |
 
 ---
 

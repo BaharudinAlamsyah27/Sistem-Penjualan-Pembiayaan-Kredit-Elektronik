@@ -1,0 +1,3 @@
+<x-cetak-layout judul="Nota Pembayaran DP" :paper="config('cetak.nota_dp')">
+<div class="page simple"><h1>NOTA PEMBAYARAN UANG MUKA</h1><p>No. Faktur: <strong>{{ $angsuran->faktur->no_faktur }}</strong></p><p>Tanggal: {{ $angsuran->tgl_bayar?->format('d/m/Y') }}</p><p>Telah diterima dari: <strong>{{ $angsuran->faktur->salesOrder->pelanggan->nama }}</strong></p><p>Barang: {{ $angsuran->faktur->salesOrder->barang->nama }} × {{ $angsuran->faktur->salesOrder->qty }}</p><p>Jumlah DP: <strong>Rp {{ number_format((float)$angsuran->nominal,0,',','.') }}</strong></p><div class="lines">Pembayaran uang muka untuk transaksi kredit.</div><div class="sign">Penerima<br><br><br>(__________________)</div></div>
+</x-cetak-layout>

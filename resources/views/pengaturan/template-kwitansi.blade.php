@@ -11,6 +11,7 @@
 
         @if($templateTersedia)
             <div class="mt-5 overflow-hidden rounded-lg border bg-gray-50 p-2"><img src="{{ route('pengaturan.template-kwitansi.preview') }}" alt="Pratinjau template kwitansi" class="mx-auto max-h-[620px] max-w-full object-contain"></div>
+            <div class="mt-3 flex gap-3 text-sm"><a class="text-blue-700 underline" href="{{ route('pengaturan.template-kwitansi.kalibrasi') }}">Pratinjau posisi</a><a class="text-blue-700 underline" href="{{ route('pengaturan.template-kwitansi.kalibrasi', ['grid' => 1]) }}">Tampilkan garis bantu 10 mm</a></div>
             <form method="POST" action="{{ route('pengaturan.template-kwitansi.destroy') }}" class="mt-4" onsubmit="return confirm('Hapus template kwitansi yang tersimpan?')">@csrf @method('DELETE')<button class="rounded-lg border border-rose-200 px-4 py-2 text-sm text-rose-700">Hapus Template</button></form>
         @endif
 
