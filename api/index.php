@@ -28,7 +28,7 @@ try {
     $app = require __DIR__ . '/../bootstrap/app.php';
     $app->useStoragePath($tmpStorage);
 
-    // Baca env dari $_ENV / $_SERVER / getenv() karena php.ini serverless sering memakai variables_order=GPCS
+    // Salin skema SQLite siap pakai lalu jalankan db:seed (menghindari pragma_table_xinfo pada SQLite lama di Vercel)
     $dbConnection = $_ENV['DB_CONNECTION'] ?? $_SERVER['DB_CONNECTION'] ?? getenv('DB_CONNECTION') ?: '';
     $dbPath = $_ENV['DB_DATABASE'] ?? $_SERVER['DB_DATABASE'] ?? getenv('DB_DATABASE') ?: '/tmp/database.sqlite';
     $readyFlag = '/tmp/.nexaerp_db_ready';
@@ -37,10 +37,8 @@ try {
         $lockHandle = fopen('/tmp/.nexaerp_db.lock', 'c');
         if ($lockHandle && flock($lockHandle, LOCK_EX)) {
             if (!file_exists($readyFlag)) {
-                if (!file_exists($dbPath)) {
-                    touch($dbPath);
-                }
-                $app->make(Kernel::class)->call('migrate', ['--force' => true, '--seed' => true]);
+                copy(__DIR__ . '/../database/demo_schema.sqlite', $dbPath);
+                $app->make(Kernel::class)->call('db:seed', ['--force' => true]);
                 touch($readyFlag);
             }
             flock($lockHandle, LOCK_UN);
