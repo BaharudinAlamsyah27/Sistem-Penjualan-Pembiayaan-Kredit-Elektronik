@@ -37,7 +37,7 @@ try {
         $lockHandle = fopen('/tmp/.nexaerp_db.lock', 'c');
         if ($lockHandle && flock($lockHandle, LOCK_EX)) {
             if (!file_exists($readyFlag)) {
-                copy(__DIR__ . '/../database/demo_schema.sqlite', $dbPath);
+                copy(__DIR__ . '/demo_schema.sqlite', $dbPath);
                 $app->make(Kernel::class)->call('db:seed', ['--force' => true]);
                 touch($readyFlag);
             }
