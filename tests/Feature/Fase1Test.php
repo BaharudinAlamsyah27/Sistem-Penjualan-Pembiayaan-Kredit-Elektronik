@@ -49,7 +49,7 @@ class Fase1Test extends TestCase
     public function test_admin_cabang_can_login(): void
     {
         $response = $this->post('/login', [
-            'email' => 'solo@nexa.com',
+            'email' => 'gesi@nexa.com',
             'password' => 'password',
         ]);
 
@@ -78,26 +78,26 @@ class Fase1Test extends TestCase
 
     public function test_admin_cabang_cannot_see_other_branch_data(): void
     {
-        $adminSolo = User::where('email', 'solo@nexa.com')->first();
-        $cabangSolo = Cabang::where('kode', 'CAB-SOLO')->first();
-        $cabangSragen = Cabang::where('kode', 'CAB-SRAGEN')->first();
+        $adminGesi = User::where('email', 'gesi@nexa.com')->first();
+        $cabangGesi = Cabang::where('kode', 'CAB-GESI')->first();
+        $cabangGemolong = Cabang::where('kode', 'CAB-GEMOLONG')->first();
 
-        $this->actingAs($adminSolo);
+        $this->actingAs($adminGesi);
 
-        // Solo admin should only see Solo customers
+        // Gesi admin should only see Gesi customers
         $pelanggans = Pelanggan::all();
         $this->assertGreaterThan(0, $pelanggans->count());
         foreach ($pelanggans as $p) {
-            $this->assertEquals($cabangSolo->id, $p->cabang_id);
-            $this->assertNotEquals($cabangSragen->id, $p->cabang_id);
+            $this->assertEquals($cabangGesi->id, $p->cabang_id);
+            $this->assertNotEquals($cabangGemolong->id, $p->cabang_id);
         }
 
-        // Solo admin should only see Solo employees
+        // Gesi admin should only see Gesi employees
         $karyawans = Karyawan::all();
         $this->assertGreaterThan(0, $karyawans->count());
         foreach ($karyawans as $k) {
-            $this->assertEquals($cabangSolo->id, $k->cabang_id);
-            $this->assertNotEquals($cabangSragen->id, $k->cabang_id);
+            $this->assertEquals($cabangGesi->id, $k->cabang_id);
+            $this->assertNotEquals($cabangGemolong->id, $k->cabang_id);
         }
     }
 
@@ -115,10 +115,10 @@ class Fase1Test extends TestCase
 
     public function test_branch_id_is_automatically_assigned_on_create_for_admin_cabang(): void
     {
-        $adminSolo = User::where('email', 'solo@nexa.com')->first();
-        $cabangSolo = Cabang::where('kode', 'CAB-SOLO')->first();
+        $adminGesi = User::where('email', 'gesi@nexa.com')->first();
+        $cabangGesi = Cabang::where('kode', 'CAB-GESI')->first();
 
-        $this->actingAs($adminSolo);
+        $this->actingAs($adminGesi);
 
         $baru = Pelanggan::create([
             'kode' => 'PLG-TEST-AUTO',
@@ -130,6 +130,6 @@ class Fase1Test extends TestCase
             'kecamatan' => 'Laweyan',
         ]);
 
-        $this->assertEquals($cabangSolo->id, $baru->cabang_id);
+        $this->assertEquals($cabangGesi->id, $baru->cabang_id);
     }
 }

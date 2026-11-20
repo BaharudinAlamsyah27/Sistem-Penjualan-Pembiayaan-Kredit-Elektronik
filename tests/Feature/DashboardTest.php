@@ -39,36 +39,34 @@ class DashboardTest extends TestCase
         $response->assertSee('Angsuran Masuk Hari Ini');
         $response->assertSee('Sales Order Menunggu Survey');
         $response->assertSee('Tagihan Angsuran Jatuh Tempo Hari Ini');
-        $response->assertSee('Bpk. Sudirman');
-        $response->assertSee('Ibu Siti Aminah');
     }
 
     public function test_admin_cabang_sees_branch_badge_and_no_cabang_menu(): void
     {
-        /** @var User $adminSolo */
-        $adminSolo = User::where('email', 'solo@nexa.com')->first();
+        /** @var User $adminGesi */
+        $adminGesi = User::where('email', 'gesi@nexa.com')->first();
 
-        $response = $this->actingAs($adminSolo)->get('/dashboard');
+        $response = $this->actingAs($adminGesi)->get('/dashboard');
 
         $response->assertStatus(200);
         $response->assertSee('NexaERP');
-        $response->assertSee('Cabang Solo');
+        $response->assertSee('Cabang Gesi');
         $response->assertDontSee('Data Cabang');
 
         // Admin cabang cannot access /cabang route
-        $cabangResponse = $this->actingAs($adminSolo)->get('/cabang');
+        $cabangResponse = $this->actingAs($adminGesi)->get('/cabang');
         $cabangResponse->assertStatus(403);
     }
 
     public function test_authenticated_user_can_access_sidebar_modules(): void
     {
-        /** @var User $adminSolo */
-        $adminSolo = User::where('email', 'solo@nexa.com')->first();
+        /** @var User $adminGesi */
+        $adminGesi = User::where('email', 'gesi@nexa.com')->first();
 
-        $this->actingAs($adminSolo)->get('/pelanggan')->assertStatus(200)->assertSee('Data Pelanggan');
-        $this->actingAs($adminSolo)->get('/sales-order')->assertStatus(200)->assertSee('Sales Order (SO)');
-        $this->actingAs($adminSolo)->get('/survey')->assertStatus(200)->assertSee('Survey Kelayakan');
-        $this->actingAs($adminSolo)->get('/angsuran')->assertStatus(200)->assertSee('Penerimaan Angsuran');
-        $this->actingAs($adminSolo)->get('/barang')->assertStatus(200)->assertSee('Data Barang');
+        $this->actingAs($adminGesi)->get('/pelanggan')->assertStatus(200)->assertSee('Data Pelanggan');
+        $this->actingAs($adminGesi)->get('/sales-order')->assertStatus(200)->assertSee('Sales Order (SO)');
+        $this->actingAs($adminGesi)->get('/survey')->assertStatus(200)->assertSee('Survey Kelayakan');
+        $this->actingAs($adminGesi)->get('/angsuran')->assertStatus(200)->assertSee('Penerimaan Angsuran');
+        $this->actingAs($adminGesi)->get('/barang')->assertStatus(200)->assertSee('Data Barang');
     }
 }

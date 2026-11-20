@@ -15,9 +15,15 @@ class KreditService
      */
     public static function hitung(float $harga, float $dp, int $tenor, float $bunga): array
     {
-        $pokok = $harga - $dp;
-        $margin = $pokok * ($bunga / 100) * $tenor;
-        $total = $pokok + $margin;
+        $hargaSen = (int) round($harga * 100);
+        $dpSen = (int) round($dp * 100);
+        $pokokSen = $hargaSen - $dpSen;
+        $marginSen = (int) round($pokokSen * ($bunga / 100) * $tenor);
+        $totalSen = $pokokSen + $marginSen;
+
+        $pokok = $pokokSen / 100;
+        $margin = $marginSen / 100;
+        $total = $totalSen / 100;
 
         return [
             'pokok_piutang' => $pokok,
